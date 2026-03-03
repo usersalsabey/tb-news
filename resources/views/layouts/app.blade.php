@@ -19,6 +19,8 @@
     
     <!-- Scripts -->
     @stack('scripts')
+
+    @include('partials.chatbot')
     
 </body>
 </html>

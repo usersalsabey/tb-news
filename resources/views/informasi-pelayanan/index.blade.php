@@ -42,7 +42,9 @@
     .notice p { font-size:13.5px; color:var(--muted); line-height:1.6; }
     .notice p strong { color:var(--text); font-weight:700; }
     .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
-    .card { background:var(--white); border-radius:20px; border:1px solid var(--border); overflow:hidden; text-decoration:none; color:inherit; display:flex; flex-direction:column; transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s; }
+
+    /* Card — now a div, cursor pointer for hover feel */
+    .card { background:var(--white); border-radius:20px; border:1px solid var(--border); overflow:hidden; color:inherit; display:flex; flex-direction:column; transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s; cursor:pointer; }
     .card:hover { transform:translateY(-5px); box-shadow:0 20px 48px rgba(10,22,40,0.12); border-color:transparent; }
     .card-band { height:6px; }
     .band-blue { background:linear-gradient(90deg,#1a3a6e,#2563eb); }
@@ -70,7 +72,7 @@
     .check-green { background:#10b981; }
     .check-red { background:#ef4444; }
     .check-amber { background:#f59e0b; }
-    .card-cta { padding:0 28px 24px; display:flex; align-items:center; justify-content:space-between; }
+    .card-cta { padding:0 28px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
     .cta-link { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; text-decoration:none; padding:10px 20px; border-radius:10px; transition:all 0.2s; }
     .cta-blue { color:#2563eb; background:#eff6ff; }
     .cta-green { color:#059669; background:#ecfdf5; }
@@ -78,6 +80,14 @@
     .cta-amber { color:#d97706; background:#fffbeb; }
     .cta-link:hover { filter:brightness(0.9); }
     .cta-arrow { opacity:0.5; font-size:18px; color:var(--border); }
+
+    /* External link badges */
+    .ext-links { padding:0 28px 20px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; border-top:1px solid var(--border); padding-top:16px; margin:0 28px 20px; }
+    .ext-links-label { font-size:10.5px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--muted); margin-right:4px; flex-basis:100%; margin-bottom:4px; }
+    .ext-badge { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; text-decoration:none; padding:7px 14px; border-radius:8px; border:1px solid var(--border); background:var(--white); color:var(--text); transition:all 0.2s; white-space:nowrap; }
+    .ext-badge:hover { border-color:var(--accent); color:var(--accent); background:#eff6ff; transform:translateY(-1px); box-shadow:0 4px 12px rgba(37,99,235,0.1); }
+    .ext-badge svg { flex-shrink:0; }
+
     footer { background:var(--navy); color:var(--white); padding:0; }
     .footer-location { background:#0d1e38; border-bottom:1px solid rgba(255,255,255,0.06); padding:20px 56px; }
     .footer-location-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
@@ -190,7 +200,6 @@
                 <span class="current">Informasi Pelayanan</span>
             </div>
         </div>
-
     </div>
 </section>
 
@@ -201,7 +210,9 @@
         <p><strong>Layanan tersedia 24 jam.</strong> Pilih layanan di bawah untuk melihat persyaratan lengkap dan akses langsung ke portal resmi Polri.</p>
     </div>
     <div class="grid">
-        <a href="{{ route('information.skck') }}" class="card">
+
+        {{-- SKCK ONLINE --}}
+        <div class="card">
             <div class="card-band band-blue"></div>
             <div class="card-inner">
                 <div class="card-meta"><span class="card-chip chip-blue">Surat Keterangan</span><div class="card-icon-wrap icon-blue">📋</div></div>
@@ -213,9 +224,21 @@
                     <li><span class="check check-blue">✓</span> Ambil SKCK langsung di Polres / Polsek</li>
                 </ul>
             </div>
-            <div class="card-cta"><span class="cta-link cta-blue">Lihat Detail & Akses Layanan →</span><span class="cta-arrow">›</span></div>
-        </a>
-        <a href="{{ route('information.sim') }}" class="card">
+            <div class="ext-links" onclick="event.stopPropagation()">
+                <span class="ext-links-label">Unduh Aplikasi</span>
+                <a href="https://play.google.com/store/apps/details?id=superapps.polri.presisi.presisi" target="_blank" rel="noopener" class="ext-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Google Play
+                </a>
+                <a href="https://apps.apple.com/id/app/super-app-polri/id1617509708" target="_blank" rel="noopener" class="ext-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    App Store
+                </a>
+            </div>
+        </div>
+
+        {{-- SIM ONLINE --}}
+        <div class="card">
             <div class="card-band band-green"></div>
             <div class="card-inner">
                 <div class="card-meta"><span class="card-chip chip-green">Surat Izin Mengemudi</span><div class="card-icon-wrap icon-green">🚗</div></div>
@@ -227,9 +250,21 @@
                     <li><span class="check check-green">✓</span> Proses cepat via aplikasi Digital Korlantas</li>
                 </ul>
             </div>
-            <div class="card-cta"><span class="cta-link cta-green">Lihat Detail & Akses Layanan →</span><span class="cta-arrow">›</span></div>
-        </a>
-        <a href="{{ route('information.penerimaan') }}" class="card">
+            <div class="ext-links" onclick="event.stopPropagation()">
+                <span class="ext-links-label">Unduh Aplikasi Digital Korlantas</span>
+                <a href="https://play.google.com/store/apps/details?id=id.qoin.korlantas.user" target="_blank" rel="noopener" class="ext-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Google Play
+                </a>
+                <a href="https://apps.apple.com/id/app/digital-korlantas-polri/id1565558949" target="_blank" rel="noopener" class="ext-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    App Store
+                </a>
+            </div>
+        </div>
+
+        {{-- PENERIMAAN POLRI --}}
+        <div class="card">
             <div class="card-band band-red"></div>
             <div class="card-inner">
                 <div class="card-meta"><span class="card-chip chip-red">Rekrutmen</span><div class="card-icon-wrap icon-red">👮</div></div>
@@ -241,9 +276,17 @@
                     <li><span class="check check-red">✓</span> Gratis — waspada calo & penipuan</li>
                 </ul>
             </div>
-            <div class="card-cta"><span class="cta-link cta-red">Lihat Detail & Akses Layanan →</span><span class="cta-arrow">›</span></div>
-        </a>
-        <a href="{{ route('information.wbs') }}" class="card">
+            <div class="ext-links" onclick="event.stopPropagation()">
+                <span class="ext-links-label">Akses Portal Resmi</span>
+                <a href="https://penerimaan.polri.go.id/" target="_blank" rel="noopener" class="ext-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    penerimaan.polri.go.id
+                </a>
+            </div>
+        </div>
+
+        {{-- WBS --}}
+        <div class="card">
             <div class="card-band band-amber"></div>
             <div class="card-inner">
                 <div class="card-meta"><span class="card-chip chip-amber">Pengaduan Rahasia</span><div class="card-icon-wrap icon-amber">🔒</div></div>
@@ -255,8 +298,8 @@
                     <li><span class="check check-amber">✓</span> Dilindungi dari tindakan balasan</li>
                 </ul>
             </div>
-            <div class="card-cta"><span class="cta-link cta-amber">Lihat Detail & Akses Layanan →</span><span class="cta-arrow">›</span></div>
-        </a>
+        </div>
+
     </div>
 </div>
 
