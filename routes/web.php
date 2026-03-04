@@ -55,3 +55,5 @@ Route::get('/informasi-pelayanan/skck',       [InformasiPelayananController::cla
 Route::get('/informasi-pelayanan/sim',        [InformasiPelayananController::class, 'sim'])->name('information.sim');
 Route::get('/informasi-pelayanan/penerimaan', [InformasiPelayananController::class, 'penerimaan'])->name('information.penerimaan');
 Route::get('/informasi-pelayanan/wbs',        [InformasiPelayananController::class, 'wbs'])->name('information.wbs');
+
+Route::get('/informasi/perpustakaan-data', [InformasiPelayananController::class, 'perpusdata'])->name('information.perpusdata');

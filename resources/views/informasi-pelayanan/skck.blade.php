@@ -151,11 +151,11 @@
 
 <div class="page-hero">
     <div class="page-hero-content">
-        <span class="hero-icon">📋</span>
+        <span class="hero-icon"></span>
         <h1>SKCK Online</h1>
         <p>Surat Keterangan Catatan Kepolisian — urus online, lebih cepat dan mudah</p>
         <div class="breadcrumb">
-            <a href="{{ route('home') }}">🏠 Beranda</a> <span>›</span>
+            <a href="{{ route('home') }}"> Beranda</a> <span>›</span>
             <a href="{{ route('information') }}">Informasi Pelayanan</a> <span>›</span>
             <span>SKCK Online</span>
         </div>
@@ -167,24 +167,24 @@
     {{-- Informasi Umum --}}
     <div class="info-block">
         <div class="block-title">
-            <div class="block-title-icon">ℹ️</div>
+            <div class="block-title-icon"></div>
             Informasi Umum
         </div>
         <div class="info-pills">
             <div class="pill">
-                <span class="pill-icon">💰</span>
+                <span class="pill-icon"></span>
                 <div><div class="pill-label">Biaya</div><div class="pill-value">Rp 30.000</div></div>
             </div>
             <div class="pill">
-                <span class="pill-icon">⏱️</span>
+                <span class="pill-icon"></span>
                 <div><div class="pill-label">Proses</div><div class="pill-value">1 Hari Kerja</div></div>
             </div>
             <div class="pill">
-                <span class="pill-icon">📅</span>
+                <span class="pill-icon"></span>
                 <div><div class="pill-label">Masa Berlaku</div><div class="pill-value">6 Bulan</div></div>
             </div>
             <div class="pill">
-                <span class="pill-icon">🌐</span>
+                <span class="pill-icon"></span>
                 <div><div class="pill-label">Metode</div><div class="pill-value">Online + Ambil di Polres</div></div>
             </div>
         </div>
@@ -193,7 +193,7 @@
     {{-- Persyaratan --}}
     <div class="info-block">
         <div class="block-title">
-            <div class="block-title-icon">📄</div>
+            <div class="block-title-icon"></div>
             Dokumen yang Diperlukan
         </div>
         <ul class="req-list">
@@ -209,7 +209,7 @@
     {{-- Langkah-langkah --}}
     <div class="info-block">
         <div class="block-title">
-            <div class="block-title-icon">📝</div>
+            <div class="block-title-icon"></div>
             Cara Mengurus SKCK Online
         </div>
         <div class="steps">
@@ -254,12 +254,12 @@
     {{-- Tombol Aksi --}}
     <div class="info-block">
         <div class="block-title">
-            <div class="block-title-icon">🔗</div>
+            <div class="block-title-icon"></div>
             Akses Layanan
         </div>
         <div class="action-buttons">
             <a href="https://skck.polri.go.id" target="_blank" class="btn-main">
-                🌐 Buka Portal SKCK Online
+                 Buka Portal SKCK Online
             </a>
             <a href="{{ route('information') }}" class="btn-back">
                 ← Kembali ke Layanan
@@ -273,11 +273,11 @@
     <div class="footer-content">
         <div class="footer-section">
             <h4>Kontak Kami</h4>
-            <p>📧 {{ $contact['email'] }}<br>📞 {{ $contact['phone'] }}<br>🚨 {{ $contact['hotline'] }}<br>💬 {{ $contact['whatsapp'] }}</p>
+            <p>{{ $contact['email'] }}<br> {{ $contact['phone'] }}<br> {{ $contact['hotline'] }}<br> {{ $contact['whatsapp'] }}</p>
         </div>
         <div class="footer-section">
             <h4>Alamat</h4>
-            <p>{{ $contact['address'] }}<br>{{ $contact['city'] }}<br>{{ $contact['country'] }}<br>🕐 {{ $contact['hours'] }}</p>
+            <p>{{ $contact['address'] }}<br>{{ $contact['city'] }}<br>{{ $contact['country'] }}<br> {{ $contact['hours'] }}</p>
         </div>
         <div class="footer-section">
             <h4>Tentang Kami</h4>
@@ -287,7 +287,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>© {{ date('Y') }} Tribrata News Gunungkidul - Kepolres Gunungkidul | Melayani Dengan Hati ❤️</p>
+        <p>© {{ date('Y') }} Tribrata News Gunungkidul - Kepolres Gunungkidul | Melayani Masyarakat Gunungkidul</p>
     </div>
 </footer>
 

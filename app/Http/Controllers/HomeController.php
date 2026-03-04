@@ -68,7 +68,6 @@ class HomeController extends Controller
             ['icon' => '📷', 'name' => 'Instagram', 'handle' => '@polres.gunungkidul', 'url' => 'https://www.instagram.com/polres.gunungkidul/'],
             ['icon' => '👍', 'name' => 'Facebook',  'handle' => 'Polres Gunungkidul',  'url' => 'https://www.facebook.com/polres.gunungkidul/?locale=id_ID'],
             ['icon' => '▶️', 'name' => 'YouTube',   'handle' => 'Polres Gunungkidul',  'url' => 'https://www.youtube.com/@PolresGunungkidul'],
-            ['icon' => '🐦', 'name' => 'Twitter',   'handle' => '@TBNewsPolri',         'url' => 'https://twitter.com/tbnewspolri'],
         ];
 
         // Contact

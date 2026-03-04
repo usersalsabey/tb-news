@@ -22,12 +22,33 @@
         --radius:  16px;
     }
 
+    /* ===== DARK MODE VARIABLES ===== */
+    html.dark {
+        --surface: #0f1923;
+        --white:   #1a2535;
+        --text:    #e2e8f0;
+        --muted:   #94a3b8;
+        --border:  #1e2d42;
+    }
+
+    /* ===== TRANSISI HALUS ===== */
+    body, .vm-section, .news-section, .social-section, .ig-section,
+    .vm-card, .news-card, .social-card, .social-icon-wrap,
+    .section-header h2, .section-header p, .eyebrow,
+    .news-title, .news-excerpt, .news-date,
+    .mission-list li, .ig-username, .ig-stat strong, .ig-view-all,
+    .filter-tab, .result-count, .result-count strong {
+        transition: background-color 0.3s ease, color 0.3s ease,
+                    border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
     body {
         font-family: 'Plus Jakarta Sans', sans-serif;
         background: var(--surface);
         color: var(--text);
         overflow-x: hidden;
     }
+    html.dark body { background: var(--surface); color: var(--text); }
 
     html { scroll-behavior: smooth; }
 
@@ -45,26 +66,13 @@
         border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        text-decoration: none;
-    }
-    .logo img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-    }
+    .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .logo img { width: 44px; height: 44px; object-fit: contain; }
     .logo-text { display: flex; flex-direction: column; }
-    .logo-text span:first-child {
-        font-size: 15px; font-weight: 800; color: var(--white);
-        letter-spacing: 0.3px; line-height: 1.2;
-    }
-    .logo-text span:last-child {
-        font-size: 11px; color: var(--gold); font-weight: 500;
-        letter-spacing: 0.8px; text-transform: uppercase;
-    }
+    .logo-text span:first-child { font-size: 15px; font-weight: 800; color: var(--white); letter-spacing: 0.3px; line-height: 1.2; }
+    .logo-text span:last-child { font-size: 11px; color: var(--gold); font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; }
+
+    .header-right { display: flex; align-items: center; gap: 4px; }
 
     nav ul { display: flex; list-style: none; gap: 4px; }
     nav ul li a {
@@ -75,485 +83,181 @@
     nav ul li a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
     nav ul li a.active { color: var(--white); background: var(--accent); }
 
+    /* ===== DARK MODE TOGGLE BUTTON ===== */
+    .dark-toggle {
+        width: 38px; height: 38px; border-radius: 10px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.25s;
+        flex-shrink: 0;
+        margin-left: 8px;
+        outline: none;
+    }
+    .dark-toggle:hover {
+        background: rgba(255,255,255,0.14);
+        color: var(--gold-lt);
+        border-color: rgba(240,165,0,0.4);
+    }
+    .dark-toggle svg { transition: transform 0.45s ease; pointer-events: none; }
+    .dark-toggle:hover svg { transform: rotate(22deg); }
+    .dark-toggle .icon-moon { display: block; }
+    .dark-toggle .icon-sun  { display: none; }
+    html.dark .dark-toggle .icon-moon { display: none; }
+    html.dark .dark-toggle .icon-sun  { display: block; }
+
     /* ===== HERO SLIDESHOW ===== */
     .hero {
-        position: relative;
-        height: 580px;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        position: relative; height: 580px; overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
     }
-
-    .hero-slides-wrapper {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        z-index: 0;
-    }
-
-    .hero-slides-wrapper .hero-slide {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        opacity: 0;
-        transition: opacity 1.2s ease-in-out;
-    }
+    .hero-slides-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+    .hero-slides-wrapper .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease-in-out; }
     .hero-slides-wrapper .hero-slide.active { opacity: 1; }
-    .hero-slides-wrapper .hero-slide img {
-        display: block; width: 100%; height: 100%;
-        object-fit: cover; object-position: center;
-    }
-
+    .hero-slides-wrapper .hero-slide img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
     .hero-slides-wrapper .hero-slide.active:nth-child(1) img { animation: kb1 20s ease-in-out infinite alternate; }
     .hero-slides-wrapper .hero-slide.active:nth-child(2) img { animation: kb2 20s ease-in-out infinite alternate; }
     .hero-slides-wrapper .hero-slide.active:nth-child(3) img { animation: kb3 20s ease-in-out infinite alternate; }
     .hero-slides-wrapper .hero-slide.active:nth-child(4) img { animation: kb4 20s ease-in-out infinite alternate; }
-
-    @keyframes kb1 { 0% { transform: scale(1)    translate(0,0); }    100% { transform: scale(1.12) translate(-2%,-1%); } }
-    @keyframes kb2 { 0% { transform: scale(1.1)  translate(-2%,0); }  100% { transform: scale(1)    translate(2%,-2%); } }
-    @keyframes kb3 { 0% { transform: scale(1)    translate(2%,1%); }  100% { transform: scale(1.1)  translate(-1%,-2%); } }
-    @keyframes kb4 { 0% { transform: scale(1.08) translate(1%,-1%); } 100% { transform: scale(1)    translate(-2%,1%); } }
-
+    @keyframes kb1 { 0% { transform: scale(1)    translate(0,0);    } 100% { transform: scale(1.12) translate(-2%,-1%); } }
+    @keyframes kb2 { 0% { transform: scale(1.1)  translate(-2%,0);  } 100% { transform: scale(1)    translate(2%,-2%);  } }
+    @keyframes kb3 { 0% { transform: scale(1)    translate(2%,1%);  } 100% { transform: scale(1.1)  translate(-1%,-2%); } }
+    @keyframes kb4 { 0% { transform: scale(1.08) translate(1%,-1%); } 100% { transform: scale(1)    translate(-2%,1%);  } }
     .hero-overlay {
         position: absolute; inset: 0;
-        background: linear-gradient(
-            135deg,
-            rgba(10,22,40,0.80) 0%,
-            rgba(26,58,110,0.65) 60%,
-            rgba(10,22,40,0.78) 100%
-        );
+        background: linear-gradient(135deg, rgba(10,22,40,0.80) 0%, rgba(26,58,110,0.65) 60%, rgba(10,22,40,0.78) 100%);
         z-index: 1;
     }
-
-    .hero-content {
-        position: relative; z-index: 2;
-        text-align: center; color: var(--white);
-        max-width: 820px; padding: 40px;
-    }
-
+    .hero-content { position: relative; z-index: 2; text-align: center; color: var(--white); max-width: 820px; padding: 40px; }
     .hero-tag {
         display: inline-flex; align-items: center; gap: 8px;
-        background: rgba(240,165,0,0.12);
-        border: 1px solid rgba(240,165,0,0.3);
-        color: var(--gold-lt);
-        font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
-        text-transform: uppercase; padding: 6px 14px;
-        border-radius: 100px; margin-bottom: 22px;
+        background: rgba(240,165,0,0.12); border: 1px solid rgba(240,165,0,0.3);
+        color: var(--gold-lt); font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+        text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 22px;
     }
     .hero-tag::before { content: '●'; font-size: 8px; }
-
-    .hero-content h1 {
-        font-family: 'DM Serif Display', serif;
-        font-size: 62px; font-weight: 400;
-        line-height: 1.1; margin-bottom: 18px;
-        letter-spacing: -0.5px;
-    }
+    .hero-content h1 { font-family: 'DM Serif Display', serif; font-size: 62px; font-weight: 400; line-height: 1.1; margin-bottom: 18px; letter-spacing: -0.5px; }
     .hero-content h1 em { font-style: italic; color: var(--gold-lt); }
-
-    .hero-content p {
-        font-size: 16px; color: rgba(255,255,255,0.65);
-        line-height: 1.8; margin-bottom: 32px;
-        max-width: 520px; margin-left: auto; margin-right: auto;
-    }
-
-    .hero-btn {
-        display: inline-block; padding: 14px 36px;
-        background: var(--gold); color: var(--navy);
-        font-weight: 700; font-size: 14px; border-radius: 10px;
-        text-decoration: none; transition: all 0.25s;
-        letter-spacing: 0.3px;
-    }
-    .hero-btn:hover {
-        background: var(--gold-lt);
-        transform: translateY(-3px);
-        box-shadow: 0 12px 32px rgba(240,165,0,0.35);
-    }
-
-    /* Arrow buttons */
-    .hero-arrow {
-        position: absolute; top: 50%; transform: translateY(-50%);
-        z-index: 3;
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-        color: var(--white); width: 46px; height: 46px;
-        border-radius: 50%; display: flex; align-items: center;
-        justify-content: center; font-size: 18px; cursor: pointer;
-        backdrop-filter: blur(8px); transition: all 0.25s; outline: none;
-    }
-    .hero-arrow:hover {
-        background: var(--gold); border-color: var(--gold);
-        color: var(--navy); transform: translateY(-50%) scale(1.08);
-    }
+    .hero-content p { font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.8; margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .hero-btn { display: inline-block; padding: 14px 36px; background: var(--gold); color: var(--navy); font-weight: 700; font-size: 14px; border-radius: 10px; text-decoration: none; transition: all 0.25s; letter-spacing: 0.3px; }
+    .hero-btn:hover { background: var(--gold-lt); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(240,165,0,0.35); }
+    .hero-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--white); width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.25s; outline: none; }
+    .hero-arrow:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); transform: translateY(-50%) scale(1.08); }
     .hero-arrow.prev { left: 28px; }
     .hero-arrow.next { right: 28px; }
-
-    /* Dots */
-    .hero-dots {
-        position: absolute; bottom: 24px; left: 50%;
-        transform: translateX(-50%); z-index: 3;
-        display: flex; gap: 8px; align-items: center;
-    }
-    .hero-dot {
-        width: 8px; height: 8px; border-radius: 50%;
-        background: rgba(255,255,255,0.35);
-        border: 1.5px solid rgba(255,255,255,0.5);
-        cursor: pointer; transition: all 0.35s;
-    }
-    .hero-dot.active {
-        background: var(--gold); border-color: var(--gold);
-        width: 24px; border-radius: 4px;
-    }
-
-    /* Caption */
-    .hero-caption {
-        position: absolute; bottom: 58px;
-        left: 0; right: 0; z-index: 3; text-align: center;
-    }
-    .hero-caption-text {
-        display: inline-block;
-        background: rgba(10,22,40,0.55);
-        backdrop-filter: blur(6px);
-        color: rgba(255,255,255,0.85);
-        font-size: 13px; font-weight: 500; letter-spacing: 0.8px;
-        padding: 5px 18px; border-radius: 20px;
-        border: 1px solid rgba(255,255,255,0.15);
-        opacity: 0; transition: opacity 0.6s ease;
-    }
+    .hero-dots { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; gap: 8px; align-items: center; }
+    .hero-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.35); border: 1.5px solid rgba(255,255,255,0.5); cursor: pointer; transition: all 0.35s; }
+    .hero-dot.active { background: var(--gold); border-color: var(--gold); width: 24px; border-radius: 4px; }
+    .hero-caption { position: absolute; bottom: 58px; left: 0; right: 0; z-index: 3; text-align: center; }
+    .hero-caption-text { display: inline-block; background: rgba(10,22,40,0.55); backdrop-filter: blur(6px); color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 500; letter-spacing: 0.8px; padding: 5px 18px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); opacity: 0; transition: opacity 0.6s ease; }
     .hero-caption-text.visible { opacity: 1; }
-
-    /* Progress */
-    .hero-progress {
-        position: absolute; bottom: 0; left: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--gold), var(--gold-lt));
-        z-index: 3; width: 0%;
-    }
+    .hero-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-lt)); z-index: 3; width: 0%; }
 
     /* ===== SECTION WRAPPER ===== */
-    .section-wrap {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 72px 40px;
-    }
-
-    .section-header {
-        margin-bottom: 44px;
-    }
-    .section-header .eyebrow {
-        display: inline-block;
-        font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-        text-transform: uppercase; color: var(--accent);
-        margin-bottom: 10px;
-    }
-    .section-header h2 {
-        font-family: 'DM Serif Display', serif;
-        font-size: 38px; color: var(--text);
-        line-height: 1.15; font-weight: 400;
-    }
-    .section-header p {
-        font-size: 15px; color: var(--muted);
-        line-height: 1.75; margin-top: 10px;
-        max-width: 480px;
-    }
-    .section-divider {
-        width: 48px; height: 3px;
-        background: linear-gradient(90deg, var(--accent), var(--gold));
-        border-radius: 2px; margin-top: 14px;
-    }
+    .section-wrap { max-width: 1100px; margin: 0 auto; padding: 72px 40px; }
+    .section-header { margin-bottom: 44px; }
+    .section-header .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    html.dark .section-header .eyebrow { color: #60a5fa; }
+    .section-header h2 { font-family: 'DM Serif Display', serif; font-size: 38px; color: var(--text); line-height: 1.15; font-weight: 400; }
+    .section-header p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-top: 10px; max-width: 480px; }
+    .section-divider { width: 48px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 2px; margin-top: 14px; }
 
     /* ===== VISION & MISSION ===== */
     .vm-section { background: var(--white); }
-
-    .vm-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-    }
-
-    .vm-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 36px 32px;
-        position: relative;
-        overflow: hidden;
-        transition: box-shadow 0.25s, transform 0.25s;
-    }
-    .vm-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 16px 40px rgba(10,22,40,0.1);
-    }
-    .vm-card::before {
-        content: '';
-        position: absolute; top: 0; left: 0;
-        width: 4px; height: 100%;
-        background: linear-gradient(180deg, var(--accent), var(--gold));
-    }
-
-    .vm-card-icon {
-        width: 48px; height: 48px; border-radius: 14px;
-        background: #dbeafe;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 22px; margin-bottom: 18px;
-    }
-
-    .vm-card h3 {
-        font-size: 20px; font-weight: 800; color: var(--text);
-        margin-bottom: 14px;
-    }
-    .vm-card p {
-        font-size: 14px; line-height: 1.85; color: var(--muted);
-    }
-
-    .mission-list {
-        list-style: none; display: flex; flex-direction: column; gap: 10px;
-    }
-    .mission-list li {
-        display: flex; align-items: flex-start; gap: 10px;
-        font-size: 13.5px; color: #4b5563; line-height: 1.65;
-    }
-    .mission-list li::before {
-        content: '✓';
-        width: 18px; height: 18px; border-radius: 50%;
-        background: var(--accent); color: var(--white);
-        font-size: 9px; font-weight: 900; flex-shrink: 0;
-        display: flex; align-items: center; justify-content: center;
-        margin-top: 2px;
-    }
+    html.dark .vm-section { background: #141f2e; }
+    .vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .vm-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; position: relative; overflow: hidden; transition: box-shadow 0.25s, transform 0.25s, background-color 0.3s, border-color 0.3s; }
+    .vm-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(10,22,40,0.1); }
+    html.dark .vm-card { background: #1a2535; border-color: #1e2d42; }
+    html.dark .vm-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .vm-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--accent), var(--gold)); }
+    .vm-card-icon { width: 48px; height: 48px; border-radius: 14px; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
+    html.dark .vm-card-icon { background: #1e3a5f; }
+    .vm-card h3 { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+    .vm-card p { font-size: 14px; line-height: 1.85; color: var(--muted); }
+    .mission-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .mission-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: #4b5563; line-height: 1.65; }
+    html.dark .mission-list li { color: #94a3b8; }
+    .mission-list li::before { content: '✓'; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: var(--white); font-size: 9px; font-weight: 900; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
 
     /* ===== NEWS ===== */
     .news-section { background: var(--surface); }
-
-    .news-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-    }
-
-    .news-card {
-        background: var(--white);
-        border-radius: 18px;
-        border: 1px solid var(--border);
-        overflow: hidden;
-        display: flex; flex-direction: column;
-        transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
-        text-decoration: none; color: inherit;
-    }
-    .news-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 18px 44px rgba(10,22,40,0.11);
-        border-color: transparent;
-    }
-
-    .news-image {
-        width: 100%; height: 200px;
-        position: relative; overflow: hidden;
-        background: var(--blue);
-    }
-    .news-image > img,
-    .news-slide img {
-        width: 100%; height: 100%; object-fit: cover; display: block;
-        transition: transform 0.4s ease;
-    }
+    html.dark .news-section { background: #0f1923; }
+    .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .news-card { background: var(--white); border-radius: 18px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s, background-color 0.3s; text-decoration: none; color: inherit; }
+    .news-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(10,22,40,0.11); border-color: transparent; }
+    html.dark .news-card { background: #1a2535; border-color: #1e2d42; }
+    html.dark .news-card:hover { box-shadow: 0 18px 44px rgba(0,0,0,0.4); border-color: #2d3e55; }
+    .news-image { width: 100%; height: 200px; position: relative; overflow: hidden; background: var(--blue); }
+    .news-image > img, .news-slide img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
     .news-card:hover .news-image > img { transform: scale(1.05); }
-
-    .news-slideshow {
-        position: relative; width: 100%; height: 100%;
-    }
-    .news-slide {
-        position: absolute; width: 100%; height: 100%;
-        opacity: 0; transition: opacity 1s ease-in-out;
-    }
+    .news-slideshow { position: relative; width: 100%; height: 100%; }
+    .news-slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; }
     .news-slide.active { opacity: 1; }
-
-    .slideshow-dots {
-        position: absolute; bottom: 10px; left: 50%;
-        transform: translateX(-50%);
-        display: flex; gap: 6px; z-index: 10;
-    }
-    .dot {
-        width: 7px; height: 7px; border-radius: 50%;
-        background: rgba(255,255,255,0.5); cursor: pointer;
-        transition: all 0.3s;
-    }
+    .slideshow-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; }
     .dot.active { background: var(--white); width: 20px; border-radius: 3px; }
-
-    .news-icon-placeholder {
-        width: 100%; height: 100%;
-        background: linear-gradient(135deg, var(--blue), var(--accent));
-        display: flex; align-items: center; justify-content: center;
-        font-size: 60px;
-    }
-
+    .news-icon-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, var(--blue), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 60px; }
     .news-body { padding: 22px 22px 18px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
-
-    .news-date {
-        font-size: 11.5px; font-weight: 700; letter-spacing: 0.8px;
-        text-transform: uppercase; color: var(--accent);
-    }
-    .news-title {
-        font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.35;
-    }
-    .news-excerpt {
-        font-size: 13.5px; color: var(--muted); line-height: 1.7; flex: 1;
-    }
-    .news-readmore {
-        display: inline-flex; align-items: center; gap: 6px;
-        font-size: 13px; font-weight: 700; color: var(--accent);
-        text-decoration: none; margin-top: 8px; transition: gap 0.2s;
-    }
+    .news-date { font-size: 11.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--accent); }
+    html.dark .news-date { color: #60a5fa; }
+    .news-title { font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.35; }
+    .news-excerpt { font-size: 13.5px; color: var(--muted); line-height: 1.7; flex: 1; }
+    .news-readmore { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; margin-top: 8px; transition: gap 0.2s; }
+    html.dark .news-readmore { color: #60a5fa; }
     .news-readmore:hover { gap: 10px; }
 
-    /* ===== WEATHER BAR (compact) ===== */
-    .wx-bar {
-        background: #0d1e38;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
-        padding: 0 56px;
-        height: 52px;
-        display: flex;
-        align-items: center;
-        gap: 0;
-        overflow: hidden;
-        position: relative;
-    }
-    /* Kiri: cuaca sekarang */
-    .wx-bar-current {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-shrink: 0;
-        padding-right: 20px;
-        border-right: 1px solid rgba(255,255,255,0.08);
-        height: 32px;
-    }
+    /* ===== WEATHER BAR ===== */
+    .wx-bar { background: #0d1e38; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0 56px; height: 52px; display: flex; align-items: center; gap: 0; overflow: hidden; position: relative; }
+    html.dark .wx-bar { background: #080f1a; }
+    .wx-bar-current { display: flex; align-items: center; gap: 10px; flex-shrink: 0; padding-right: 20px; border-right: 1px solid rgba(255,255,255,0.08); height: 32px; }
     .wx-bar-icon   { font-size: 22px; line-height: 1; }
     .wx-bar-temp   { font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
     .wx-bar-info   { display: flex; flex-direction: column; gap: 1px; }
     .wx-bar-desc   { font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.75); line-height: 1; }
-    .wx-bar-meta   {
-        display: flex; gap: 10px;
-        font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500;
-    }
+    .wx-bar-meta   { display: flex; gap: 10px; font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500; }
     .wx-bar-meta span { display: flex; align-items: center; gap: 3px; }
-
-    /* Kanan: 7 hari mini pills */
-    .wx-bar-days {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        flex: 1;
-        overflow-x: auto;
-        padding: 0 16px;
-        scrollbar-width: none;
-    }
+    .wx-bar-days { display: flex; align-items: center; gap: 4px; flex: 1; overflow-x: auto; padding: 0 16px; scrollbar-width: none; }
     .wx-bar-days::-webkit-scrollbar { display: none; }
-
-    .wx-bar-day {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 12px;
-        border-radius: 100px;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.06);
-        flex-shrink: 0;
-        transition: background 0.2s, border-color 0.2s;
-        cursor: default;
-    }
-    .wx-bar-day:hover {
-        background: rgba(37,99,235,0.18);
-        border-color: rgba(37,99,235,0.3);
-    }
-    .wx-bar-day.wx-today-pill {
-        background: rgba(37,99,235,0.2);
-        border-color: rgba(37,99,235,0.45);
-    }
-    .wx-bar-day-name {
-        font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px;
-        text-transform: uppercase; color: rgba(255,255,255,0.45);
-        min-width: 26px;
-    }
+    .wx-bar-day { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 100px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; transition: background 0.2s, border-color 0.2s; cursor: default; }
+    .wx-bar-day:hover { background: rgba(37,99,235,0.18); border-color: rgba(37,99,235,0.3); }
+    .wx-bar-day.wx-today-pill { background: rgba(37,99,235,0.2); border-color: rgba(37,99,235,0.45); }
+    .wx-bar-day-name { font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); min-width: 26px; }
     .wx-bar-day.wx-today-pill .wx-bar-day-name { color: var(--gold-lt); }
     .wx-bar-day-icon  { font-size: 16px; line-height: 1; }
-    .wx-bar-day-temps {
-        font-size: 11px; font-weight: 700; color: var(--white);
-        white-space: nowrap;
-    }
-    .wx-bar-day-lo { color: rgba(255,255,255,0.35); font-weight: 500; }
-
-    /* Refresh btn */
-    .wx-bar-refresh {
-        flex-shrink: 0;
-        background: none;
-        border: none;
-        color: rgba(255,255,255,0.25);
-        cursor: pointer;
-        padding: 6px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        transition: color 0.2s;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    .wx-bar-day-temps { font-size: 11px; font-weight: 700; color: var(--white); white-space: nowrap; }
+    .wx-bar-day-lo    { color: rgba(255,255,255,0.35); font-weight: 500; }
+    .wx-bar-refresh { flex-shrink: 0; background: none; border: none; color: rgba(255,255,255,0.25); cursor: pointer; padding: 6px; border-radius: 6px; display: flex; align-items: center; transition: color 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
     .wx-bar-refresh:hover { color: rgba(255,255,255,0.7); }
     .wx-bar-refresh svg { transition: transform 0.5s; }
     .wx-bar-refresh.spinning svg { animation: wxSpin 0.7s linear infinite; }
     @keyframes wxSpin { to { transform: rotate(360deg); } }
-
-    /* Skeleton pulse */
-    .wx-sk {
-        background: rgba(255,255,255,0.07);
-        border-radius: 6px;
-        animation: wxPulse 1.6s ease-in-out infinite;
-        display: inline-block;
-    }
+    .wx-sk { background: rgba(255,255,255,0.07); border-radius: 6px; animation: wxPulse 1.6s ease-in-out infinite; display: inline-block; }
     @keyframes wxPulse { 0%,100%{opacity:.4} 50%{opacity:.9} }
 
     /* ===== SOCIAL MEDIA ===== */
     .social-section { background: var(--white); }
-
-    .social-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-    }
-
-    .social-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 24px 20px;
-        display: flex; align-items: center; gap: 16px;
-        text-decoration: none; color: var(--text);
-        transition: all 0.25s; cursor: pointer;
-    }
-    .social-card:hover {
-        background: var(--navy); color: var(--white);
-        border-color: var(--navy);
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(10,22,40,0.15);
-    }
+    html.dark .social-section { background: #141f2e; }
+    .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .social-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 20px; display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--text); transition: all 0.25s; cursor: pointer; }
+    .social-card:hover { background: var(--navy); color: var(--white); border-color: var(--navy); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(10,22,40,0.15); }
     .social-card:hover .social-handle { color: rgba(255,255,255,0.55); }
-
-    .social-icon-wrap {
-        width: 46px; height: 46px; border-radius: 12px;
-        background: var(--white); display: flex;
-        align-items: center; justify-content: center;
-        font-size: 22px; flex-shrink: 0;
-        border: 1px solid var(--border);
-    }
-    .social-card:hover .social-icon-wrap {
-        background: rgba(255,255,255,0.1);
-        border-color: rgba(255,255,255,0.15);
-    }
-
+    html.dark .social-card { background: #1a2535; border-color: #1e2d42; color: #e2e8f0; }
+    html.dark .social-card:hover { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .social-icon-wrap { width: 46px; height: 46px; border-radius: 12px; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; border: 1px solid var(--border); }
+    html.dark .social-icon-wrap { background: #0f1923; border-color: #1e2d42; }
+    .social-card:hover .social-icon-wrap { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
     .social-name { font-size: 14px; font-weight: 700; }
     .social-handle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    html.dark .social-handle { color: #64748b; }
 
     /* ===== FOOTER ===== */
     footer { background: var(--navy); color: var(--white); padding: 0; }
+    html.dark footer { background: #060d18; }
     .footer-location { background: #0d1e38; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 20px 56px; }
+    html.dark .footer-location { background: #080f1a; }
     .footer-location-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
     .footer-location-left { display: flex; align-items: center; gap: 14px; }
     .location-icon-wrap { width: 44px; height: 44px; background: rgba(37,99,235,0.15); border: 1px solid rgba(37,99,235,0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
@@ -571,11 +275,54 @@
     .footer-bottom { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: rgba(255,255,255,0.3); }
 
     /* ===== SCROLL ANIMATION ===== */
-    .fade-up {
-        opacity: 0; transform: translateY(32px);
-        transition: opacity 0.65s ease, transform 0.65s ease;
-    }
+    .fade-up { opacity: 0; transform: translateY(32px); transition: opacity 0.65s ease, transform 0.65s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== INSTAGRAM FEED ===== */
+    .ig-section { background: var(--surface); border-top: 1px solid var(--border); }
+    html.dark .ig-section { background: #0f1923; border-color: #1e2d42; }
+    .ig-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; gap: 20px; flex-wrap: wrap; }
+    .ig-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 2.5px; flex-shrink: 0; }
+    .ig-avatar-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
+    html.dark .ig-avatar-inner { background: #1a2535; }
+    .ig-avatar-inner img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .ig-profile { display: flex; align-items: center; gap: 16px; }
+    .ig-username { font-size: 15px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 6px; }
+    .ig-verified { width: 16px; height: 16px; background: #2563eb; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 9px; font-weight: 900; }
+    .ig-stats { display: flex; gap: 16px; margin-top: 4px; }
+    .ig-stat { font-size: 12px; color: var(--muted); }
+    .ig-stat strong { color: var(--text); font-weight: 700; }
+    html.dark .ig-stat strong { color: #e2e8f0; }
+    .ig-follow-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); color: var(--white); font-size: 13px; font-weight: 700; border-radius: 10px; text-decoration: none; transition: all 0.25s; letter-spacing: 0.2px; flex-shrink: 0; }
+    .ig-follow-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(220,39,67,0.35); filter: brightness(1.05); }
+    .ig-feed { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; border-radius: 16px; overflow: hidden; }
+    .ig-item { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: pointer; background: var(--blue); }
+    .ig-item:nth-child(1)  { background: linear-gradient(135deg, #0a1628, #1e4da1); }
+    .ig-item:nth-child(2)  { background: linear-gradient(135deg, #1a3a6e, #2563eb); }
+    .ig-item:nth-child(3)  { background: linear-gradient(135deg, #064e3b, #10b981); }
+    .ig-item:nth-child(4)  { background: linear-gradient(135deg, #7f1d1d, #ef4444); }
+    .ig-item:nth-child(5)  { background: linear-gradient(135deg, #78350f, #f59e0b); }
+    .ig-item:nth-child(6)  { background: linear-gradient(135deg, #312e81, #6366f1); }
+    .ig-item:nth-child(7)  { background: linear-gradient(135deg, #1e3a5f, #3b82f6); }
+    .ig-item:nth-child(8)  { background: linear-gradient(135deg, #134e4a, #14b8a6); }
+    .ig-item:nth-child(9)  { background: linear-gradient(135deg, #4a1d96, #a78bfa); }
+    .ig-item:nth-child(10) { background: linear-gradient(135deg, #1c1917, #78716c); }
+    .ig-item:nth-child(11) { background: linear-gradient(135deg, #0f172a, #1e40af); }
+    .ig-item:nth-child(12) { background: linear-gradient(135deg, #052e16, #16a34a); }
+    .ig-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; position: relative; z-index: 1; }
+    .ig-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 28px; color: rgba(255,255,255,0.7); }
+    .ig-placeholder span { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; text-align: center; padding: 0 8px; }
+    .ig-overlay { position: absolute; inset: 0; background: rgba(10,22,40,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: opacity 0.25s ease; }
+    .ig-item:hover .ig-overlay { opacity: 1; }
+    .ig-item:hover img { transform: scale(1.08); }
+    .ig-overlay-stats { display: flex; gap: 16px; }
+    .ig-overlay-stat { display: flex; align-items: center; gap: 5px; color: var(--white); font-size: 13px; font-weight: 700; }
+    .ig-overlay-caption { font-size: 11px; color: rgba(255,255,255,0.6); text-align: center; padding: 0 12px; line-height: 1.5; max-width: 140px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .ig-footer-row { margin-top: 20px; display: flex; align-items: center; justify-content: center; }
+    .ig-view-all { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--muted); text-decoration: none; padding: 10px 24px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--white); transition: all 0.25s; }
+    html.dark .ig-view-all { background: #1a2535; border-color: #1e2d42; color: #64748b; }
+    .ig-view-all:hover { border-color: #dc2743; color: #dc2743; background: #fff5f5; }
+    html.dark .ig-view-all:hover { background: #2d1515; }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
@@ -599,206 +346,14 @@
         .wx-bar { padding: 0 20px; }
         .wx-bar-current { padding-right: 12px; }
         .wx-bar-desc { display: none; }
+        .ig-feed { grid-template-columns: repeat(4, 1fr); }
+        .ig-item:nth-child(n+9) { display: none; }
     }
     @media (max-width: 480px) {
         .hero-content h1 { font-size: 30px; }
         .social-grid { grid-template-columns: 1fr; }
         nav ul li a { padding: 7px 11px; font-size: 12px; }
         .wx-bar-meta { display: none; }
-    }
-
-    /* ===== INSTAGRAM FEED ===== */
-    .ig-section {
-        background: var(--surface);
-        border-top: 1px solid var(--border);
-    }
-
-    .ig-header-row {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        margin-bottom: 28px;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .ig-profile {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .ig-avatar {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-        padding: 2.5px;
-        flex-shrink: 0;
-    }
-    .ig-avatar-inner {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background: var(--white);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        overflow: hidden;
-    }
-    .ig-avatar-inner img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-
-    .ig-profile-text {}
-    .ig-username {
-        font-size: 15px;
-        font-weight: 800;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .ig-verified {
-        width: 16px; height: 16px;
-        background: #2563eb;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 9px;
-        font-weight: 900;
-    }
-    .ig-stats {
-        display: flex;
-        gap: 16px;
-        margin-top: 4px;
-    }
-    .ig-stat {
-        font-size: 12px;
-        color: var(--muted);
-    }
-    .ig-stat strong {
-        color: var(--text);
-        font-weight: 700;
-    }
-
-    .ig-follow-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 22px;
-        background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
-        color: var(--white);
-        font-size: 13px;
-        font-weight: 700;
-        border-radius: 10px;
-        text-decoration: none;
-        transition: all 0.25s;
-        letter-spacing: 0.2px;
-        flex-shrink: 0;
-    }
-    .ig-follow-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 28px rgba(220,39,67,0.35);
-        filter: brightness(1.05);
-    }
-
-    /* Grid feed */
-    .ig-feed {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 6px;
-        border-radius: 16px;
-        overflow: hidden;
-    }
-
-    .ig-item {
-        position: relative;
-        aspect-ratio: 1 / 1;
-        overflow: hidden;
-        cursor: pointer;
-        background: var(--blue);
-    }
-
-    .ig-item:nth-child(1)  { background: linear-gradient(135deg, #0a1628, #1e4da1); }
-    .ig-item:nth-child(2)  { background: linear-gradient(135deg, #1a3a6e, #2563eb); }
-    .ig-item:nth-child(3)  { background: linear-gradient(135deg, #064e3b, #10b981); }
-    .ig-item:nth-child(4)  { background: linear-gradient(135deg, #7f1d1d, #ef4444); }
-    .ig-item:nth-child(5)  { background: linear-gradient(135deg, #78350f, #f59e0b); }
-    .ig-item:nth-child(6)  { background: linear-gradient(135deg, #312e81, #6366f1); }
-    .ig-item:nth-child(7)  { background: linear-gradient(135deg, #1e3a5f, #3b82f6); }
-    .ig-item:nth-child(8)  { background: linear-gradient(135deg, #134e4a, #14b8a6); }
-    .ig-item:nth-child(9)  { background: linear-gradient(135deg, #4a1d96, #a78bfa); }
-    .ig-item:nth-child(10) { background: linear-gradient(135deg, #1c1917, #78716c); }
-    .ig-item:nth-child(11) { background: linear-gradient(135deg, #0f172a, #1e40af); }
-    .ig-item:nth-child(12) { background: linear-gradient(135deg, #052e16, #16a34a); }
-
-    .ig-item img {
-        width: 100%; height: 100%; object-fit: cover; display: block;
-        transition: transform 0.4s ease; position: relative; z-index: 1;
-    }
-
-    .ig-placeholder {
-        width: 100%; height: 100%;
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-        gap: 6px; font-size: 28px; color: rgba(255,255,255,0.7);
-    }
-    .ig-placeholder span {
-        font-size: 11px; font-weight: 600;
-        color: rgba(255,255,255,0.45); letter-spacing: 0.5px;
-        text-align: center; padding: 0 8px;
-    }
-
-    .ig-overlay {
-        position: absolute; inset: 0;
-        background: rgba(10,22,40,0.7);
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-        gap: 8px; opacity: 0; transition: opacity 0.25s ease;
-    }
-    .ig-item:hover .ig-overlay { opacity: 1; }
-    .ig-item:hover img { transform: scale(1.08); }
-
-    .ig-overlay-stats { display: flex; gap: 16px; }
-    .ig-overlay-stat {
-        display: flex; align-items: center; gap: 5px;
-        color: var(--white); font-size: 13px; font-weight: 700;
-    }
-
-    .ig-overlay-caption {
-        font-size: 11px; color: rgba(255,255,255,0.6);
-        text-align: center; padding: 0 12px; line-height: 1.5;
-        max-width: 140px; overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-
-    .ig-footer-row {
-        margin-top: 20px;
-        display: flex; align-items: center; justify-content: center;
-    }
-    .ig-view-all {
-        display: inline-flex; align-items: center; gap: 8px;
-        font-size: 13.5px; font-weight: 700; color: var(--muted);
-        text-decoration: none; padding: 10px 24px;
-        border: 1.5px solid var(--border); border-radius: 10px;
-        background: var(--white); transition: all 0.25s;
-    }
-    .ig-view-all:hover { border-color: #dc2743; color: #dc2743; background: #fff5f5; }
-
-    @media (max-width: 900px) {
-        .ig-feed { grid-template-columns: repeat(4, 1fr); }
-        .ig-item:nth-child(n+9) { display: none; }
-    }
-    @media (max-width: 560px) {
         .ig-feed { grid-template-columns: repeat(3, 1fr); }
         .ig-item:nth-child(n+7) { display: none; }
         .ig-header-row { flex-direction: column; align-items: flex-start; }
@@ -813,21 +368,36 @@
     <a href="{{ route('home') }}" class="logo">
         <img src="{{ asset('images/new.PNG') }}" alt="Logo Polri">
         <div class="logo-text">
-            <span>Tribun News Gunungkidul</span>
+            <span>Tribrata News Gunungkidul</span>
             <span>Polres Gunungkidul</span>
         </div>
     </a>
-    <nav>
-        <ul>
-            <li><a href="{{ route('home') }}" class="active">Beranda</a></li>
-            <li><a href="{{ route('profile') }}">Profil</a></li>
-            <li><a href="{{ route('news') }}">Tribratanews</a></li>
-            <li><a href="{{ route('information') }}">Informasi Pelayanan</a></li>
-        </ul>
-    </nav>
+    <div class="header-right">
+        <nav>
+            <ul>
+                <li><a href="{{ route('home') }}" class="active">Beranda</a></li>
+                <li><a href="{{ route('profile') }}">Profil</a></li>
+                <li><a href="{{ route('news') }}">Tribratanews</a></li>
+                <li><a href="{{ route('information') }}">Informasi Pelayanan</a></li>
+            </ul>
+        </nav>
+        {{-- Dark Mode Toggle --}}
+        <button class="dark-toggle" id="darkToggle" title="Ganti tema" aria-label="Toggle dark mode">
+            <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+        </button>
+    </div>
 </header>
 
-{{-- ===== WEATHER BAR (compact, real-time) ===== --}}
+{{-- ===== WEATHER BAR ===== --}}
 <div class="wx-bar" id="wxBar">
     <div class="wx-bar-current">
         <div class="wx-bar-icon" id="wxIcon">⏳</div>
@@ -876,16 +446,13 @@
             <img src="{{ asset('images/hero/slide4.jpg') }}" alt="Slide 4">
         </div>
     </div>
-
     <div class="hero-overlay"></div>
-
     <div class="hero-content">
         <div class="hero-tag">Portal Resmi Polres Gunungkidul</div>
         <h1>TB News <em>Polri</em></h1>
         <p>Melayani Dengan Sepenuh Hati, Menjaga Dengan Tanggung Jawab</p>
         <a href="#berita" class="hero-btn">Lihat Berita Terbaru</a>
     </div>
-
     <button class="hero-arrow prev" id="heroPrev" aria-label="Sebelumnya">&#8592;</button>
     <button class="hero-arrow next" id="heroNext" aria-label="Selanjutnya">&#8594;</button>
     <div class="hero-dots" id="heroDots"></div>
@@ -904,12 +471,10 @@
         </div>
         <div class="vm-grid fade-up">
             <div class="vm-card">
-                <div class="vm-card-icon">🎯</div>
                 <h3>Visi Kami</h3>
                 <p>{{ $vision }}</p>
             </div>
             <div class="vm-card">
-                <div class="vm-card-icon">🚀</div>
                 <h3>Misi Kami</h3>
                 <ul class="mission-list">
                     @foreach($mission as $point)
@@ -994,106 +559,68 @@
                 Follow di Instagram
             </a>
         </div>
-
         <div class="ig-feed fade-up">
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post1.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">👮<span>Operasi Kamtibmas</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 312</span><span class="ig-overlay-stat">💬 24</span></div>
-                    <p class="ig-overlay-caption">Operasi keamanan dan ketertiban masyarakat</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 312</span><span class="ig-overlay-stat">💬 24</span></div><p class="ig-overlay-caption">Operasi keamanan dan ketertiban masyarakat</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post2.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🚦<span>Lalu Lintas</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 278</span><span class="ig-overlay-stat">💬 18</span></div>
-                    <p class="ig-overlay-caption">Pengaturan arus lalu lintas di pusat kota</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 278</span><span class="ig-overlay-stat">💬 18</span></div><p class="ig-overlay-caption">Pengaturan arus lalu lintas di pusat kota</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post3.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🤝<span>Bakti Sosial</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 445</span><span class="ig-overlay-stat">💬 36</span></div>
-                    <p class="ig-overlay-caption">Kegiatan bakti sosial bersama masyarakat</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 445</span><span class="ig-overlay-stat">💬 36</span></div><p class="ig-overlay-caption">Kegiatan bakti sosial bersama masyarakat</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post4.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🏫<span>Polisi Sahabat Anak</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 521</span><span class="ig-overlay-stat">💬 47</span></div>
-                    <p class="ig-overlay-caption">Program Polisi Sahabat Anak di sekolah</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 521</span><span class="ig-overlay-stat">💬 47</span></div><p class="ig-overlay-caption">Program Polisi Sahabat Anak di sekolah</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post5.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">📋<span>Pelayanan SKCK</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 198</span><span class="ig-overlay-stat">💬 12</span></div>
-                    <p class="ig-overlay-caption">Pelayanan SKCK cepat dan transparan</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 198</span><span class="ig-overlay-stat">💬 12</span></div><p class="ig-overlay-caption">Pelayanan SKCK cepat dan transparan</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post6.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🌄<span>Gunungkidul</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 387</span><span class="ig-overlay-stat">💬 29</span></div>
-                    <p class="ig-overlay-caption">Menjaga keindahan wisata Gunungkidul</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 387</span><span class="ig-overlay-stat">💬 29</span></div><p class="ig-overlay-caption">Menjaga keindahan wisata Gunungkidul</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post7.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🏋️<span>Apel Pagi</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 234</span><span class="ig-overlay-stat">💬 15</span></div>
-                    <p class="ig-overlay-caption">Apel pagi seluruh personel Polres</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 234</span><span class="ig-overlay-stat">💬 15</span></div><p class="ig-overlay-caption">Apel pagi seluruh personel Polres</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post8.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🚓<span>Patroli</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 302</span><span class="ig-overlay-stat">💬 21</span></div>
-                    <p class="ig-overlay-caption">Patroli malam menjaga keamanan warga</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 302</span><span class="ig-overlay-stat">💬 21</span></div><p class="ig-overlay-caption">Patroli malam menjaga keamanan warga</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post9.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">📢<span>Sosialisasi</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 176</span><span class="ig-overlay-stat">💬 9</span></div>
-                    <p class="ig-overlay-caption">Sosialisasi keamanan kepada warga desa</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 176</span><span class="ig-overlay-stat">💬 9</span></div><p class="ig-overlay-caption">Sosialisasi keamanan kepada warga desa</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post10.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🏆<span>Prestasi</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 489</span><span class="ig-overlay-stat">💬 53</span></div>
-                    <p class="ig-overlay-caption">Penghargaan untuk anggota berprestasi</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 489</span><span class="ig-overlay-stat">💬 53</span></div><p class="ig-overlay-caption">Penghargaan untuk anggota berprestasi</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post11.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">💉<span>Vaksinasi</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 265</span><span class="ig-overlay-stat">💬 18</span></div>
-                    <p class="ig-overlay-caption">Polres mendukung program vaksinasi</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 265</span><span class="ig-overlay-stat">💬 18</span></div><p class="ig-overlay-caption">Polres mendukung program vaksinasi</p></div>
             </a>
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
                 <img src="{{ asset('images/ig/post12.jpg') }}" alt="" onerror="this.style.display='none'">
                 <div class="ig-placeholder">🌿<span>Lingkungan</span></div>
-                <div class="ig-overlay">
-                    <div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 341</span><span class="ig-overlay-stat">💬 27</span></div>
-                    <p class="ig-overlay-caption">Polres peduli lingkungan hidup</p>
-                </div>
+                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 341</span><span class="ig-overlay-stat">💬 27</span></div><p class="ig-overlay-caption">Polres peduli lingkungan hidup</p></div>
             </a>
         </div>
-
         <div class="ig-footer-row fade-up">
             <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-view-all">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1116,8 +643,47 @@
         </div>
         <div class="social-grid fade-up">
             @foreach($socialMedia as $social)
-            <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="social-card">
-                <div class="social-icon-wrap">{{ $social['icon'] }}</div>
+            <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="social-card social-card--{{ $social['platform'] ?? strtolower(str_replace(' ', '', $social['name'])) }}">
+                <div class="social-icon-wrap">
+                    @php $platform = $social['platform'] ?? strtolower(str_replace([' ', '/'], '', $social['name'])); @endphp
+
+                    @if($platform === 'instagram')
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                            <defs><radialGradient id="ig-grad" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#ffd600"/><stop offset="25%" stop-color="#ff7a00"/><stop offset="50%" stop-color="#ff0069"/><stop offset="75%" stop-color="#d300c5"/><stop offset="100%" stop-color="#7638fa"/></radialGradient></defs>
+                            <rect width="48" height="48" rx="12" fill="url(#ig-grad)"/>
+                            <rect x="13" y="13" width="22" height="22" rx="6" fill="none" stroke="white" stroke-width="2.5"/>
+                            <circle cx="24" cy="24" r="5.5" fill="none" stroke="white" stroke-width="2.5"/>
+                            <circle cx="34" cy="14" r="1.6" fill="white"/>
+                        </svg>
+                    @elseif($platform === 'facebook')
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                            <rect width="48" height="48" rx="12" fill="#1877F2"/>
+                            <path d="M32 24h-5v-3c0-1.4.7-2 2-2h3v-5h-4c-4 0-6 2.5-6 6v4h-4v5h4v13h5V29h3.5l.5-5z" fill="white"/>
+                        </svg>
+                    @elseif($platform === 'youtube')
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                            <rect width="48" height="48" rx="12" fill="#FF0000"/>
+                            <path d="M38.5 17.5s-.4-2.5-1.6-3.6c-1.5-1.6-3.2-1.6-4-1.7C28.8 12 24 12 24 12s-4.8 0-8.9.2c-.8.1-2.5.1-4 1.7-1.2 1.1-1.6 3.6-1.6 3.6S9 20.3 9 23.1v2.6c0 2.8.5 5.6.5 5.6s.4 2.5 1.6 3.6c1.5 1.6 3.5 1.5 4.4 1.7C18.5 37 24 37 24 37s4.8 0 8.9-.4c.8-.1 2.5-.1 4-1.7 1.2-1.1 1.6-3.6 1.6-3.6s.5-2.8.5-5.6v-2.6c0-2.8-.5-5.6-.5-5.6zm-15.9 11.4v-9.8l8.6 4.9-8.6 4.9z" fill="white"/>
+                        </svg>
+                    @elseif($platform === 'twitter' || $platform === 'x')
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                            <rect width="48" height="48" rx="12" fill="#000000"/>
+                            <path d="M26.4 22.3L34.8 13h-2L25.5 21l-6.6-8H11l8.8 12.8L11 35h2l7.7-9 6.2 9H35L26.4 22.3zm-2.7 3.2l-.9-1.3-7.1-10.1h3l5.7 8.1.9 1.3 7.4 10.6h-3l-6.1-8.6z" fill="white"/>
+                        </svg>
+                    @elseif($platform === 'tiktok')
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                            <rect width="48" height="48" rx="12" fill="#010101"/>
+                            <path d="M34 18.5c-1.8-.5-3.2-1.7-4-3.3v14.3c0 3.5-2.8 6.3-6.3 6.3s-6.3-2.8-6.3-6.3 2.8-6.3 6.3-6.3c.3 0 .7 0 1 .1v4.2c-.3-.1-.6-.1-1-.1-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5 2.5-1.1 2.5-2.5V11h4c.4 2.8 2.6 4.9 5.3 5.1v2.4h-1.5z" fill="white"/>
+                        </svg>
+                    @elseif($platform === 'whatsapp')
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                            <rect width="48" height="48" rx="12" fill="#25D366"/>
+                            <path d="M24 10C16.3 10 10 16.3 10 24c0 2.4.6 4.7 1.8 6.8L10 38l7.5-1.8c2 1.1 4.2 1.7 6.5 1.7 7.7 0 14-6.3 14-14S31.7 10 24 10zm7.5 19.3c-.3.9-1.8 1.7-2.5 1.8-.7.1-1.4.3-4.5-.9-3.8-1.5-6.2-5.4-6.4-5.6-.2-.3-1.5-2-.1-3.5 1-1.2 1.9-.9 2.5-.9.6 0 1 .1 1.4 0 .5-.1 1 0 1.5 1.2.5 1.2 1.5 4.1 1.7 4.4.2.3.3.7.1 1.1-.4.8-1 .8-.7 1.4.3.6 1.5 2.3 3.2 2.8 1.7.5 1.7 0 2.3-.6.4-.4.8-.6 1.3-.3.5.4 1.9 1.4 2.2 1.7.4.3.6.5.1 1.4z" fill="white"/>
+                        </svg>
+                    @else
+                        {{ $social['icon'] }}
+                    @endif
+                </div>
                 <div>
                     <div class="social-name">{{ $social['name'] }}</div>
                     <div class="social-handle">{{ $social['handle'] }}</div>
@@ -1141,9 +707,7 @@
                 </div>
             </div>
             <a href="https://maps.app.goo.gl/Xv8tKdyoVjMf4DkRA" target="_blank" rel="noopener" class="maps-btn">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-                </svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 Buka di Google Maps
             </a>
         </div>
@@ -1153,10 +717,7 @@
             <div class="footer-brand">
                 <a href="{{ route('home') }}" class="logo">
                     <img src="{{ asset('images/new.PNG') }}" alt="Logo">
-                    <div class="logo-text">
-                        <span>Tribun News Gunungkidul</span>
-                        <span>Polres Gunungkidul</span>
-                    </div>
+                    <div class="logo-text"><span>Tribrata News Gunungkidul</span><span>Polres Gunungkidul</span></div>
                 </a>
                 <p>{{ $contact['address'] }}, {{ $contact['city'] }}. Melayani seluruh masyarakat Gunungkidul dengan profesional dan terpercaya.</p>
             </div>
@@ -1176,7 +737,7 @@
         </div>
         <div class="footer-bottom">
             <span>© {{ date('Y') }} Polres Gunungkidul — Melayani Dengan Hati</span>
-            <span>Tribun News Gunungkidul</span>
+            <span>Tribrata News Gunungkidul</span>
         </div>
     </div>
 </footer>
@@ -1185,6 +746,35 @@
 
 @push('scripts')
 <script>
+// ===== DARK MODE — harus paling atas =====
+(function () {
+    const html = document.documentElement;
+    const btn  = document.getElementById('darkToggle');
+    const KEY  = 'theme';
+
+    function applyTheme(dark) {
+        dark ? html.classList.add('dark') : html.classList.remove('dark');
+    }
+
+    // Init dari localStorage
+    applyTheme(localStorage.getItem(KEY) === 'dark');
+
+    // Toggle on click
+    btn.addEventListener('click', function () {
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem(KEY, isDark ? 'dark' : 'light');
+    });
+
+    // Ikuti preferensi sistem jika belum pernah dipilih manual
+    if (!localStorage.getItem(KEY)) {
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        applyTheme(mq.matches);
+        mq.addEventListener('change', e => {
+            if (!localStorage.getItem(KEY)) applyTheme(e.matches);
+        });
+    }
+})();
+
 // ===== HERO SLIDESHOW =====
 (function () {
     const wrapper     = document.getElementById('heroSlidesWrapper');
@@ -1194,28 +784,22 @@
     const progressEl  = document.getElementById('heroProgress');
     const prevBtn     = document.getElementById('heroPrev');
     const nextBtn     = document.getElementById('heroNext');
-
     const INTERVAL = 5000;
     let current = 0, timer = null;
-
     if (!slides.length) return;
-
     slides.forEach((_, i) => {
         const dot = document.createElement('span');
         dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
         dot.addEventListener('click', () => goTo(i, true));
         dotsWrapper.appendChild(dot);
     });
-
     const getDots = () => dotsWrapper.querySelectorAll('.hero-dot');
-
     function goTo(index, resetTimer = false) {
         slides[current].classList.remove('active');
         getDots()[current].classList.remove('active');
         current = ((index % slides.length) + slides.length) % slides.length;
         slides[current].classList.add('active');
         getDots()[current].classList.add('active');
-
         const caption = slides[current].dataset.caption || '';
         captionEl.textContent = caption;
         captionEl.classList.remove('visible');
@@ -1223,46 +807,34 @@
         startProgress();
         if (resetTimer) restartTimer();
     }
-
     function startProgress() {
-        progressEl.style.transition = 'none';
-        progressEl.style.width = '0%';
+        progressEl.style.transition = 'none'; progressEl.style.width = '0%';
         void progressEl.offsetWidth;
-        progressEl.style.transition = `width ${INTERVAL}ms linear`;
-        progressEl.style.width = '100%';
+        progressEl.style.transition = `width ${INTERVAL}ms linear`; progressEl.style.width = '100%';
     }
-
     function pauseProgress() {
         const w = getComputedStyle(progressEl).width;
-        progressEl.style.transition = 'none';
-        progressEl.style.width = w;
+        progressEl.style.transition = 'none'; progressEl.style.width = w;
     }
-
     function startTimer()   { timer = setInterval(() => goTo(current + 1), INTERVAL); }
     function stopTimer()    { clearInterval(timer); }
     function restartTimer() { stopTimer(); startTimer(); }
-
     prevBtn.addEventListener('click', () => goTo(current - 1, true));
     nextBtn.addEventListener('click', () => goTo(current + 1, true));
-
     const heroEl = document.querySelector('.hero');
     heroEl.addEventListener('mouseenter', () => { stopTimer(); pauseProgress(); });
     heroEl.addEventListener('mouseleave', () => { startProgress(); restartTimer(); });
-
     let touchStartX = 0;
     heroEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
     heroEl.addEventListener('touchend', e => {
         const diff = touchStartX - e.changedTouches[0].clientX;
         if (Math.abs(diff) > 50) diff > 0 ? goTo(current + 1, true) : goTo(current - 1, true);
     }, { passive: true });
-
     document.addEventListener('keydown', e => {
         if (e.key === 'ArrowLeft')  goTo(current - 1, true);
         if (e.key === 'ArrowRight') goTo(current + 1, true);
     });
-
-    goTo(0);
-    startTimer();
+    goTo(0); startTimer();
 })();
 
 // ===== NEWS SLIDESHOW =====
@@ -1271,7 +843,6 @@ function initNewsSlideshow() {
         const slides = slideshow.querySelectorAll('.news-slide');
         const dots   = slideshow.querySelectorAll('.dot');
         let current  = 0, interval;
-
         function showSlide(index) {
             slides.forEach(s => s.classList.remove('active'));
             dots.forEach(d => d.classList.remove('active'));
@@ -1279,43 +850,34 @@ function initNewsSlideshow() {
             slides[current].classList.add('active');
             if (dots[current]) dots[current].classList.add('active');
         }
-
         function start() { interval = setInterval(() => showSlide(current + 1), 3000); }
         function stop()  { clearInterval(interval); }
-
         dots.forEach((dot, i) => {
             dot.addEventListener('click', e => { e.preventDefault(); stop(); showSlide(i); start(); });
         });
-
         slideshow.addEventListener('mouseenter', stop);
         slideshow.addEventListener('mouseleave', start);
-
         if (slides.length > 1) start();
     });
 }
 document.addEventListener('DOMContentLoaded', initNewsSlideshow);
 
-// ===== INSTAGRAM FEED — hide placeholder when real image loads =====
+// ===== INSTAGRAM — hide placeholder when real image loads =====
 document.querySelectorAll('.ig-item img').forEach(img => {
     if (img.complete && img.naturalWidth > 0) {
-        const placeholder = img.nextElementSibling;
-        if (placeholder && placeholder.classList.contains('ig-placeholder')) {
-            placeholder.style.display = 'none';
-        }
+        const ph = img.nextElementSibling;
+        if (ph && ph.classList.contains('ig-placeholder')) ph.style.display = 'none';
     } else {
         img.addEventListener('load', function () {
-            const placeholder = this.nextElementSibling;
-            if (placeholder && placeholder.classList.contains('ig-placeholder')) {
-                placeholder.style.display = 'none';
-            }
+            const ph = this.nextElementSibling;
+            if (ph && ph.classList.contains('ig-placeholder')) ph.style.display = 'none';
         });
     }
 });
 
-// ===== CUACA REAL-TIME (compact bar) =====
+// ===== CUACA REAL-TIME =====
 (function () {
     const LAT = -7.9408, LON = 110.5993, TZ = 'Asia%2FJakarta';
-
     const WMO = {
         0:{e:'☀️',d:'Cerah'}, 1:{e:'🌤️',d:'Umumnya Cerah'}, 2:{e:'⛅',d:'Berawan Sebagian'},
         3:{e:'☁️',d:'Berawan'}, 45:{e:'🌫️',d:'Berkabut'}, 48:{e:'🌫️',d:'Kabut Beku'},
@@ -1326,74 +888,42 @@ document.querySelectorAll('.ig-item img').forEach(img => {
     };
     const HARI = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
     function wmo(c) { return WMO[c] || {e:'🌡️',d:'—'}; }
-
-    const API =
-        'https://api.open-meteo.com/v1/forecast' +
-        '?latitude=' + LAT + '&longitude=' + LON +
-        '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation' +
-        '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
-        '&timezone=' + TZ + '&forecast_days=7';
-
-    const $icon = document.getElementById('wxIcon');
-    const $temp = document.getElementById('wxTemp');
-    const $desc = document.getElementById('wxDesc');
-    const $hum  = document.getElementById('wxHum');
-    const $wnd  = document.getElementById('wxWnd');
-    const $prcp = document.getElementById('wxPrcp');
-    const $days = document.getElementById('wxDays');
-    const $btn  = document.getElementById('wxRefresh');
-
+    const API = 'https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,precipitation&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone='+TZ+'&forecast_days=7';
+    const $icon=document.getElementById('wxIcon'), $temp=document.getElementById('wxTemp'),
+          $desc=document.getElementById('wxDesc'), $hum=document.getElementById('wxHum'),
+          $wnd=document.getElementById('wxWnd'),   $prcp=document.getElementById('wxPrcp'),
+          $days=document.getElementById('wxDays'), $btn=document.getElementById('wxRefresh');
     async function load() {
         $btn.classList.add('spinning');
         try {
-            const r = await fetch(API);
-            if (!r.ok) throw new Error(r.status);
-            const d = await r.json();
-            const c = d.current, dl = d.daily;
-            const w = wmo(c.weather_code);
-
-            $icon.textContent = w.e;
-            $temp.textContent = Math.round(c.temperature_2m) + '°C';
-            $desc.textContent = w.d;
-            $hum.textContent  = '💧 ' + c.relative_humidity_2m + '%';
-            $wnd.textContent  = '💨 ' + Math.round(c.wind_speed_10m) + ' km/h';
-            $prcp.textContent = '☔ ' + c.precipitation + ' mm';
-
+            const r = await fetch(API); if (!r.ok) throw new Error(r.status);
+            const d = await r.json(), c = d.current, dl = d.daily, w = wmo(c.weather_code);
+            $icon.textContent = w.e; $temp.textContent = Math.round(c.temperature_2m)+'°C'; $desc.textContent = w.d;
+            $hum.textContent  = '💧 '+c.relative_humidity_2m+'%';
+            $wnd.textContent  = '💨 '+Math.round(c.wind_speed_10m)+' km/h';
+            $prcp.textContent = '☔ '+c.precipitation+' mm';
             $days.innerHTML = '';
             dl.time.forEach((dt, i) => {
-                const isToday = i === 0;
-                const day = new Date(dt + 'T00:00:00');
-                const dw  = wmo(dl.weather_code[i]);
-                const hi  = Math.round(dl.temperature_2m_max[i]);
-                const lo  = Math.round(dl.temperature_2m_min[i]);
-                const pil = document.createElement('div');
-                pil.className = 'wx-bar-day' + (isToday ? ' wx-today-pill' : '');
-                pil.title = dw.d + ' · Hujan: ' + (dl.precipitation_probability_max[i] ?? 0) + '%';
-                pil.innerHTML =
-                    '<span class="wx-bar-day-name">' + (isToday ? 'Hari ini' : HARI[day.getDay()]) + '</span>' +
-                    '<span class="wx-bar-day-icon">'  + dw.e + '</span>' +
-                    '<span class="wx-bar-day-temps">' + hi + '° <span class="wx-bar-day-lo">/ ' + lo + '°</span></span>';
-                $days.appendChild(pil);
+                const isToday = i===0, day = new Date(dt+'T00:00:00'), dw = wmo(dl.weather_code[i]);
+                const hi = Math.round(dl.temperature_2m_max[i]), lo = Math.round(dl.temperature_2m_min[i]);
+                const p = document.createElement('div');
+                p.className = 'wx-bar-day'+(isToday?' wx-today-pill':'');
+                p.title = dw.d+' · Hujan: '+(dl.precipitation_probability_max[i]??0)+'%';
+                p.innerHTML = '<span class="wx-bar-day-name">'+(isToday?'Hari ini':HARI[day.getDay()])+'</span>'
+                            + '<span class="wx-bar-day-icon">'+dw.e+'</span>'
+                            + '<span class="wx-bar-day-temps">'+hi+'° <span class="wx-bar-day-lo">/ '+lo+'°</span></span>';
+                $days.appendChild(p);
             });
-        } catch(e) {
-            $icon.textContent = '⚠️';
-            $temp.textContent = '--';
-            $desc.textContent = 'Gagal memuat';
-        } finally {
-            $btn.classList.remove('spinning');
-        }
+        } catch(e) { $icon.textContent='⚠️'; $temp.textContent='--'; $desc.textContent='Gagal memuat'; }
+        finally { $btn.classList.remove('spinning'); }
     }
-
-    $btn.addEventListener('click', load);
-    load();
-    setInterval(load, 10 * 60 * 1000); // refresh tiap 10 menit
+    $btn.addEventListener('click', load); load(); setInterval(load, 10*60*1000);
 })();
 
 // ===== SCROLL ANIMATION =====
 const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
-
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
 // Smooth anchor scroll
