@@ -2,85 +2,104 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SocialMedia;
+use App\Models\HeroSlide;
+use App\Models\Profile;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    private function resolveImage(string $path): string
+    {
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+        if (str_starts_with($path, 'storage/')) {
+            return asset($path);
+        }
+        return asset('storage/' . $path);
+    }
+
+    private function resolveImages($images): array
+    {
+        if (empty($images)) return [];
+
+        if ($images instanceof \Illuminate\Support\Collection) {
+            return $images
+                ->map(fn($img) => $this->resolveImage(
+                    $img->path ?? $img->url ?? $img->image ?? $img->foto ?? $img->file_path ?? ''
+                ))
+                ->filter(fn($url) => $url !== '')
+                ->values()
+                ->toArray();
+        }
+
+        return array_values(array_filter(
+            array_map(fn($img) => is_string($img) && $img !== '' ? $this->resolveImage($img) : null, (array) $images)
+        ));
+    }
+
     public function index()
     {
-        // Vision & Mission
-        $vision = 'Polres Gunungkidul bertekad mewujudkan postur Polri yang profesional, bermoral dan modern sebagai pelindung, pengayom dan pelayan masyarakat, yang terpercaya dalam memelihara kamtibmas dan menegakkan hukum di wilayah Gunungkidul sebagai Kota Pariwisata dalam suatu kehidupan sosial yang demokratis, berbudaya serta masyarakat yang sejahtera.';
+        // ===== HERO SLIDES =====
+        $heroSlides = HeroSlide::where('halaman', 'beranda')
+                        ->where('is_active', true)
+                        ->orderBy('urutan')
+                        ->get();
 
-        $mission = [
-            'Memberikan perlindungan, pengayoman, dan pelayanan kepada seluruh masyarakat sehingga bebas dari gangguan fisik maupun psikis.',
-            'Memberikan bimbingan preventif kepada masyarakat untuk meningkatkan kesadaran dan kepatuhan hukum.',
-            'Menegakkan hukum secara profesional dan proporsional dengan menjunjung tinggi supremasi hukum dan Hak Asasi Manusia.',
-            'Memelihara keamanan dan ketertiban masyarakat dengan memperhatikan norma dan nilai yang berlaku di Gunungkidul.',
-            'Mengelola sumber daya personel secara profesional untuk mewujudkan keamanan wilayah dan kesejahteraan masyarakat.',
-            'Meningkatkan konsolidasi internal untuk menyamakan visi dan misi Polri sesuai harapan masyarakat.',
-            'Memelihara soliditas kesatuan Polres Gunungkidul dari pengaruh luar yang dapat merugikan organisasi.',
-            'Melaksanakan kebijakan Kapolda D.I. Yogyakarta dalam pelaksanaan tugas secara nyata dan terukur.',
-            'Meningkatkan kesadaran hukum dan berbangsa, mengingat Gunungkidul memiliki karakteristik wilayah yang khas.',
+        // ===== PROFILE =====
+        $profile  = Profile::first();
+        $sambutan = $profile?->sambutan ?? null;
+        $sejarah  = $profile?->sejarah  ?? null;
+        $kapolres = [
+            'nama' => $profile?->kapolres     ?? 'Kapolres Gunungkidul',
+            'foto' => $profile?->foto_kapolres ?? null,
         ];
 
-        // News — slug WAJIB ada di setiap item
-        $news = [
-            [
-                'slug'    => 'operasi-ketertiban-lalu-lintas',
-                'icon'    => '🚦',
-                'date'    => '10 Februari 2026',
-                'title'   => 'Operasi Ketertiban Lalu Lintas',
-                'content' => 'Kepolisian mengadakan operasi gabungan untuk meningkatkan keselamatan dan ketertiban masyarakat di seluruh wilayah. Operasi ini melibatkan berbagai unit dengan teknologi modern.',
-                'images'  => [
-                    'images/news/traffic-1.jpg',
-                    'images/news/traffic-2.jpg',
-                    'images/news/traffic-3.jpg',
-                ],
-            ],
-            [
-                'slug'    => 'pelayanan-sim-online',
-                'icon'    => '🆔',
-                'date'    => '08 Februari 2026',
-                'title'   => 'Pelayanan SIM Online',
-                'content' => 'Kini masyarakat dapat memperpanjang SIM secara online melalui layanan resmi TB News. Proses cepat, mudah, dan tanpa antrian panjang. Daftar sekarang dan nikmati kemudahan layanan digital.',
-                'images'  => [
-                    'images/news/sim-1.jpg',
-                    'images/news/sim-2.jpg',
-                ],
-            ],
-            [
-                'slug'    => 'program-polisi-sahabat-anak',
-                'icon'    => '👮',
-                'date'    => '05 Februari 2026',
-                'title'   => 'Program Polisi Sahabat Anak',
-                'content' => 'Inisiatif terbaru untuk mendekatkan diri dengan generasi muda dan memberikan edukasi keamanan sejak dini. Mari bersama membangun masa depan yang lebih aman untuk anak-anak Indonesia.',
-                'images'  => [
-                    'images/news/child-1.jpg',
-                    'images/news/child-2.jpg',
-                    'images/news/child-3.jpg',
-                    'images/news/child-4.jpg',
-                ],
-            ],
-        ];
+        // ===== VISION & MISSION dari DB =====
+        $vision  = $profile?->visi ?? '';
+        $misiRaw = $profile?->misi ?? '[]';
+        $misiArr = is_string($misiRaw) ? json_decode($misiRaw, true) : $misiRaw;
+        $mission = collect($misiArr)->pluck('isi')->toArray();
 
-        // Social Media
-        $socialMedia = [
-            ['icon' => '📷', 'name' => 'Instagram', 'handle' => '@polres.gunungkidul', 'url' => 'https://www.instagram.com/polres.gunungkidul/'],
-            ['icon' => '👍', 'name' => 'Facebook',  'handle' => 'Polres Gunungkidul',  'url' => 'https://www.facebook.com/polres.gunungkidul/?locale=id_ID'],
-            ['icon' => '▶️', 'name' => 'YouTube',   'handle' => 'Polres Gunungkidul',  'url' => 'https://www.youtube.com/@PolresGunungkidul'],
-        ];
+        // ===== NEWS dari DB =====
+        $news = News::where('is_published', true)
+                    ->orderBy('published_at', 'desc')
+                    ->take(3)
+                    ->get()
+                    ->map(function ($item) {
+                        $fotoRaw = $item->foto;
+                        $fotoArr = is_string($fotoRaw) ? json_decode($fotoRaw, true) : ($fotoRaw ?? []);
+                        return [
+                            'slug'    => $item->slug,
+                            'title'   => $item->title,
+                            'excerpt' => $item->excerpt ?? \Str::limit(strip_tags($item->content), 160),
+                            'date'    => $item->published_at?->translatedFormat('d F Y') ?? '-',
+                            'category'=> $item->category ?? 'umum',
+                            'icon'    => $item->icon ? $this->resolveImage($item->icon) : null,
+                            'images'  => $this->resolveImages($fotoArr),
+                        ];
+                    })->toArray();
 
-        // Contact
+        // ===== SOCIAL MEDIA dari DB =====
+        try {
+            $socialMedia = SocialMedia::aktif()->get();
+        } catch (\Exception $e) {
+            $socialMedia = collect();
+        }
+
+        // ===== CONTACT dari DB =====
         $contact = [
-            'email'   => 'ppidgunungkidul@gmail.com',
-            'phone'   => '0851-3375-0875',
-            'hotline' => '110 (Darurat)',
-            'address' => 'Jln. MGR Sugiyopranoto No.15',
+            'email'   => $profile?->email        ?? 'ppidgunungkidul@gmail.com',
+            'phone'   => $profile?->telepon       ?? '0851-3375-0875',
+            'hotline' => $profile?->hotline       ?? '110 (Darurat)',
+            'address' => $profile?->alamat        ?? 'Jln. MGR Sugiyopranoto No.15',
             'city'    => 'Wonosari, Gunungkidul, Yogyakarta',
-            'hours'   => '24 Jam',
+            'hours'   => $profile?->jam_pelayanan ?? '24 Jam',
         ];
 
-        // Services
+        // ===== SERVICES =====
         $services = [
             ['icon' => '📋', 'name' => 'Laporan Online',       'url' => route('services.report')],
             ['icon' => '🆔', 'name' => 'Perpanjangan SIM',     'url' => route('services.sim')],
@@ -88,25 +107,19 @@ class HomeController extends Controller
             ['icon' => '🚨', 'name' => 'Pengaduan Masyarakat', 'url' => route('services.complaint')],
         ];
 
-        // About Links
+        // ===== ABOUT LINKS =====
         $aboutLinks = [
-            [
-                'name' => 'Profil',
-                'url' => route('profile')
-            ],
-            [
-                'name' => 'Informasi Pelayanan',
-                'url' => route('information')
-            ],
-            [
-                'name' => 'Tribratanews',
-                'url' => route('news')
-            ],
+            ['name' => 'Profil',              'url' => route('profile')],
+            ['name' => 'Informasi Pelayanan', 'url' => route('information')],
+            ['name' => 'Tribratanews',        'url' => route('news')],
         ];
 
         return view('home', compact(
-            'vision', 'mission', 'news',
-            'socialMedia', 'contact', 'services', 'aboutLinks'
+            'heroSlides',
+            'sambutan', 'sejarah', 'kapolres',
+            'vision', 'mission',
+            'news', 'socialMedia',
+            'contact', 'services', 'aboutLinks'
         ));
     }
 }

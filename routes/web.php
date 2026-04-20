@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\InformasiPelayananController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatbotController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +58,5 @@ Route::get('/informasi-pelayanan/penerimaan', [InformasiPelayananController::cla
 Route::get('/informasi-pelayanan/wbs',        [InformasiPelayananController::class, 'wbs'])->name('information.wbs');
 
 Route::get('/informasi/perpustakaan-data', [InformasiPelayananController::class, 'perpusdata'])->name('information.perpusdata');
+
+Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');

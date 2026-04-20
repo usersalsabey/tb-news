@@ -1,14 +1,6 @@
 {{--
     ===== FOOTER PARTIAL =====
     Simpan di: resources/views/partials/footer.blade.php
-    Pakai di view manapun dengan: @include('partials.footer')
-
-    Variabel yang dibutuhkan (kirim dari controller):
-    - $contact['email'], $contact['phone'], $contact['hotline'], $contact['hours']
-    - $contact['address'], $contact['city']
-    - $aboutLinks (array of ['name' => '...', 'url' => '...'])
-
-    Atau hardcode langsung jika tidak pakai variabel.
 --}}
 
 <style>
@@ -178,18 +170,16 @@ footer {
             <div class="footer-location-left">
                 <div class="location-icon-wrap">📍</div>
                 <div class="location-text">
-                    <div class="location-label">Lokasi Polres Gunungkidul</div>
-                    <div class="location-address">Jln. MGR Sugiyopranoto No.15, Wonosari</div>
+                    <div class="location-label">Lokasi {{ $footerProfile->nama_instansi ?? 'Polres Gunungkidul' }}</div>
+                    <div class="location-address">{{ $footerProfile->alamat ?? 'Jln. MGR Sugiyopranoto No.15, Wonosari' }}</div>
                     <div class="location-city">Kabupaten Gunungkidul, D.I. Yogyakarta 55813</div>
                 </div>
             </div>
 
-            <a
-                href="https://maps.google.com/?q=Polres+Gunungkidul+Jln+MGR+Sugiyopranoto+No+15+Wonosari"
-                target="_blank"
-                rel="noopener"
-                class="maps-btn"
-            >
+            <a href="{{ $footerProfile->maps_url ?? 'https://maps.google.com/?q=Polres+Gunungkidul' }}"
+               target="_blank"
+               rel="noopener"
+               class="maps-btn">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2.2"
                      stroke-linecap="round" stroke-linejoin="round">
@@ -211,26 +201,18 @@ footer {
                     <img src="{{ asset('images/new.PNG') }}" alt="Logo Polri">
                     <div class="logo-text">
                         <span>Tribrata News Gunungkidul</span>
-                        <span>Polres Gunungkidul</span>
+                        <span>{{ $footerProfile->nama_instansi ?? 'Polres Gunungkidul' }}</span>
                     </div>
                 </a>
-                <p>Jln. MGR Sugiyopranoto No.15, Wonosari, Gunungkidul, Yogyakarta. Melayani seluruh masyarakat dengan profesional dan terpercaya.</p>
             </div>
 
             {{-- Kontak --}}
             <div class="footer-col">
                 <h5>Kontak</h5>
-                @if(isset($contact))
-                    <p>📧 {{ $contact['email'] }}</p>
-                    <p>📞 {{ $contact['phone'] }}</p>
-                    <p>🚨 {{ $contact['hotline'] }}</p>
-                    <p>🕐 {{ $contact['hours'] }}</p>
-                @else
-                    <p>📧 ppidgunungkidul@gmail.com</p>
-                    <p>📞 0851-3375-0875</p>
-                    <p>🚨 110 (Darurat)</p>
-                    <p>🕐 24 Jam</p>
-                @endif
+                <p>📧 {{ $contact['email']   ?? 'ppidgunungkidul@gmail.com' }}</p>
+                <p>📞 {{ $contact['phone']   ?? '0851-3375-0875' }}</p>
+                <p>🚨 {{ $contact['hotline'] ?? '110 (Darurat)' }}</p>
+                <p>🕐 {{ $contact['hours']   ?? '24 Jam' }}</p>
             </div>
 
             {{-- Navigasi --}}
@@ -238,7 +220,7 @@ footer {
                 <h5>Navigasi</h5>
                 @if(isset($aboutLinks))
                     @foreach($aboutLinks as $link)
-                    <a href="{{ $link['url'] }}">{{ $link['name'] }}</a>
+                        <a href="{{ $link['url'] }}">{{ $link['name'] }}</a>
                     @endforeach
                 @else
                     <a href="{{ route('home') }}">Beranda</a>
@@ -251,7 +233,7 @@ footer {
         </div>
 
         <div class="footer-bottom">
-            <span>© {{ date('Y') }} Polres Gunungkidul — Melayani Dengan Hati</span>
+            <span>© {{ date('Y') }} {{ $footerProfile->copyright ?? 'Polres Gunungkidul — Melayani Dengan Hati' }}</span>
             <span>Tribrata News Gunungkidul</span>
         </div>
     </div>

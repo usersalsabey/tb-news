@@ -22,7 +22,6 @@
         --radius:  16px;
     }
 
-    /* ===== DARK MODE VARIABLES ===== */
     html.dark {
         --surface: #0f1923;
         --white:   #1a2535;
@@ -31,7 +30,6 @@
         --border:  #1e2d42;
     }
 
-    /* ===== TRANSISI HALUS ===== */
     body, .vm-section, .news-section, .social-section, .ig-section,
     .vm-card, .news-card, .social-card, .social-icon-wrap,
     .section-header h2, .section-header p, .eyebrow,
@@ -49,10 +47,8 @@
         overflow-x: hidden;
     }
     html.dark body { background: var(--surface); color: var(--text); }
-
     html { scroll-behavior: smooth; }
 
-    /* ===== HEADER ===== */
     header {
         background: var(--navy);
         padding: 0 56px;
@@ -83,7 +79,6 @@
     nav ul li a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
     nav ul li a.active { color: var(--white); background: var(--accent); }
 
-    /* ===== DARK MODE TOGGLE BUTTON ===== */
     .dark-toggle {
         width: 38px; height: 38px; border-radius: 10px;
         background: rgba(255,255,255,0.07);
@@ -96,11 +91,7 @@
         margin-left: 8px;
         outline: none;
     }
-    .dark-toggle:hover {
-        background: rgba(255,255,255,0.14);
-        color: var(--gold-lt);
-        border-color: rgba(240,165,0,0.4);
-    }
+    .dark-toggle:hover { background: rgba(255,255,255,0.14); color: var(--gold-lt); border-color: rgba(240,165,0,0.4); }
     .dark-toggle svg { transition: transform 0.45s ease; pointer-events: none; }
     .dark-toggle:hover svg { transform: rotate(22deg); }
     .dark-toggle .icon-moon { display: block; }
@@ -108,11 +99,90 @@
     html.dark .dark-toggle .icon-moon { display: none; }
     html.dark .dark-toggle .icon-sun  { display: block; }
 
-    /* ===== HERO SLIDESHOW ===== */
-    .hero {
-        position: relative; height: 580px; overflow: hidden;
+    .search-wrap { display: flex; align-items: center; position: relative; margin-left: 8px; }
+    .search-toggle {
+        width: 38px; height: 38px; border-radius: 10px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
         display: flex; align-items: center; justify-content: center;
+        transition: all 0.25s; flex-shrink: 0; outline: none;
     }
+    .search-toggle:hover { background: rgba(255,255,255,0.14); color: var(--gold-lt); border-color: rgba(240,165,0,0.4); }
+    .search-box {
+        position: absolute; right: 0; top: calc(100% + 10px);
+        display: flex; align-items: center;
+        background: #0d1e38;
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 10px; overflow: hidden;
+        width: 0; opacity: 0; pointer-events: none;
+        transition: width 0.35s ease, opacity 0.25s ease;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+        min-height: 42px;
+    }
+    .search-box.open { width: 300px; opacity: 1; pointer-events: all; }
+    .search-box input {
+        flex: 1; background: transparent; border: none; outline: none;
+        color: var(--white); font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 13.5px; padding: 9px 14px;
+        caret-color: var(--gold-lt);
+    }
+    .search-box input::placeholder { color: rgba(255,255,255,0.35); }
+    .search-box-clear {
+        background: none; border: none; color: rgba(255,255,255,0.4);
+        cursor: pointer; padding: 0 10px; font-size: 16px; line-height: 1;
+        transition: color 0.2s; display: none;
+    }
+    .search-box-clear:hover { color: var(--white); }
+    .search-box-clear.visible { display: block; }
+
+    .search-results {
+        position: absolute; right: 0; top: calc(100% + 10px);
+        width: 320px; background: #0d1e38;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 14px; overflow: hidden;
+        box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+        display: none; z-index: 2000;
+    }
+    html.dark .search-results { background: #0a1220; border-color: #1e2d42; }
+    .search-results.open { display: block; }
+    .search-results-header {
+        padding: 10px 16px; font-size: 10.5px; font-weight: 700;
+        letter-spacing: 1px; text-transform: uppercase;
+        color: rgba(255,255,255,0.35); border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .search-result-item {
+        display: flex; align-items: center; gap: 12px;
+        padding: 12px 16px; text-decoration: none; color: var(--white);
+        transition: background 0.2s; cursor: pointer; border: none;
+        background: none; width: 100%; text-align: left; font-family: inherit;
+    }
+    .search-result-item:hover { background: rgba(255,255,255,0.07); }
+    .search-result-icon {
+        width: 36px; height: 36px; border-radius: 10px;
+        background: rgba(37,99,235,0.2); border: 1px solid rgba(37,99,235,0.3);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; flex-shrink: 0;
+    }
+    .search-result-title { font-size: 13px; font-weight: 700; line-height: 1.3; }
+    .search-result-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .search-result-highlight { color: var(--gold-lt); }
+    .search-no-result { padding: 20px 16px; text-align: center; font-size: 13px; color: rgba(255,255,255,0.35); }
+
+    .header-date {
+        display: flex; align-items: center; gap: 7px;
+        padding: 6px 13px; border-radius: 10px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        margin-left: 8px; flex-shrink: 0;
+    }
+    .header-date svg { color: var(--gold); flex-shrink: 0; }
+    .header-date-text { display: flex; flex-direction: column; gap: 1px; }
+    .header-date-day { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gold-lt); line-height: 1; }
+    .header-date-full { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); line-height: 1; }
+
+    .hero { position: relative; height: 580px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .hero-slides-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
     .hero-slides-wrapper .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease-in-out; }
     .hero-slides-wrapper .hero-slide.active { opacity: 1; }
@@ -125,11 +195,7 @@
     @keyframes kb2 { 0% { transform: scale(1.1)  translate(-2%,0);  } 100% { transform: scale(1)    translate(2%,-2%);  } }
     @keyframes kb3 { 0% { transform: scale(1)    translate(2%,1%);  } 100% { transform: scale(1.1)  translate(-1%,-2%); } }
     @keyframes kb4 { 0% { transform: scale(1.08) translate(1%,-1%); } 100% { transform: scale(1)    translate(-2%,1%);  } }
-    .hero-overlay {
-        position: absolute; inset: 0;
-        background: linear-gradient(135deg, rgba(10,22,40,0.80) 0%, rgba(26,58,110,0.65) 60%, rgba(10,22,40,0.78) 100%);
-        z-index: 1;
-    }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(10,22,40,0.80) 0%, rgba(26,58,110,0.65) 60%, rgba(10,22,40,0.78) 100%); z-index: 1; }
     .hero-content { position: relative; z-index: 2; text-align: center; color: var(--white); max-width: 820px; padding: 40px; }
     .hero-tag {
         display: inline-flex; align-items: center; gap: 8px;
@@ -155,7 +221,6 @@
     .hero-caption-text.visible { opacity: 1; }
     .hero-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-lt)); z-index: 3; width: 0%; }
 
-    /* ===== SECTION WRAPPER ===== */
     .section-wrap { max-width: 1100px; margin: 0 auto; padding: 72px 40px; }
     .section-header { margin-bottom: 44px; }
     .section-header .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
@@ -164,7 +229,6 @@
     .section-header p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-top: 10px; max-width: 480px; }
     .section-divider { width: 48px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 2px; margin-top: 14px; }
 
-    /* ===== VISION & MISSION ===== */
     .vm-section { background: var(--white); }
     html.dark .vm-section { background: #141f2e; }
     .vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -173,8 +237,6 @@
     html.dark .vm-card { background: #1a2535; border-color: #1e2d42; }
     html.dark .vm-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
     .vm-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--accent), var(--gold)); }
-    .vm-card-icon { width: 48px; height: 48px; border-radius: 14px; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
-    html.dark .vm-card-icon { background: #1e3a5f; }
     .vm-card h3 { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
     .vm-card p { font-size: 14px; line-height: 1.85; color: var(--muted); }
     .mission-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
@@ -182,7 +244,6 @@
     html.dark .mission-list li { color: #94a3b8; }
     .mission-list li::before { content: '✓'; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: var(--white); font-size: 9px; font-weight: 900; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
 
-    /* ===== NEWS ===== */
     .news-section { background: var(--surface); }
     html.dark .news-section { background: #0f1923; }
     .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -209,7 +270,6 @@
     html.dark .news-readmore { color: #60a5fa; }
     .news-readmore:hover { gap: 10px; }
 
-    /* ===== WEATHER BAR ===== */
     .wx-bar { background: #0d1e38; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0 56px; height: 52px; display: flex; align-items: center; gap: 0; overflow: hidden; position: relative; }
     html.dark .wx-bar { background: #080f1a; }
     .wx-bar-current { display: flex; align-items: center; gap: 10px; flex-shrink: 0; padding-right: 20px; border-right: 1px solid rgba(255,255,255,0.08); height: 32px; }
@@ -237,7 +297,6 @@
     .wx-sk { background: rgba(255,255,255,0.07); border-radius: 6px; animation: wxPulse 1.6s ease-in-out infinite; display: inline-block; }
     @keyframes wxPulse { 0%,100%{opacity:.4} 50%{opacity:.9} }
 
-    /* ===== SOCIAL MEDIA ===== */
     .social-section { background: var(--white); }
     html.dark .social-section { background: #141f2e; }
     .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -246,14 +305,13 @@
     .social-card:hover .social-handle { color: rgba(255,255,255,0.55); }
     html.dark .social-card { background: #1a2535; border-color: #1e2d42; color: #e2e8f0; }
     html.dark .social-card:hover { background: #2563eb; border-color: #2563eb; color: #fff; }
-    .social-icon-wrap { width: 46px; height: 46px; border-radius: 12px; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; border: 1px solid var(--border); }
+    .social-icon-wrap { width: 46px; height: 46px; border-radius: 12px; background: var(--white); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--border); overflow: hidden; }
     html.dark .social-icon-wrap { background: #0f1923; border-color: #1e2d42; }
     .social-card:hover .social-icon-wrap { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
     .social-name { font-size: 14px; font-weight: 700; }
     .social-handle { font-size: 12px; color: var(--muted); margin-top: 2px; }
     html.dark .social-handle { color: #64748b; }
 
-    /* ===== FOOTER ===== */
     footer { background: var(--navy); color: var(--white); padding: 0; }
     html.dark footer { background: #060d18; }
     .footer-location { background: #0d1e38; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 20px 56px; }
@@ -274,57 +332,26 @@
     .footer-col a:hover { color: var(--white); }
     .footer-bottom { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: rgba(255,255,255,0.3); }
 
-    /* ===== SCROLL ANIMATION ===== */
     .fade-up { opacity: 0; transform: translateY(32px); transition: opacity 0.65s ease, transform 0.65s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* ===== INSTAGRAM FEED ===== */
-    .ig-section { background: var(--surface); border-top: 1px solid var(--border); }
-    html.dark .ig-section { background: #0f1923; border-color: #1e2d42; }
-    .ig-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; gap: 20px; flex-wrap: wrap; }
-    .ig-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 2.5px; flex-shrink: 0; }
-    .ig-avatar-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 24px; overflow: hidden; }
-    html.dark .ig-avatar-inner { background: #1a2535; }
-    .ig-avatar-inner img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    .ig-profile { display: flex; align-items: center; gap: 16px; }
-    .ig-username { font-size: 15px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 6px; }
-    .ig-verified { width: 16px; height: 16px; background: #2563eb; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 9px; font-weight: 900; }
-    .ig-stats { display: flex; gap: 16px; margin-top: 4px; }
-    .ig-stat { font-size: 12px; color: var(--muted); }
-    .ig-stat strong { color: var(--text); font-weight: 700; }
-    html.dark .ig-stat strong { color: #e2e8f0; }
-    .ig-follow-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); color: var(--white); font-size: 13px; font-weight: 700; border-radius: 10px; text-decoration: none; transition: all 0.25s; letter-spacing: 0.2px; flex-shrink: 0; }
-    .ig-follow-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(220,39,67,0.35); filter: brightness(1.05); }
-    .ig-feed { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; border-radius: 16px; overflow: hidden; }
-    .ig-item { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: pointer; background: var(--blue); }
-    .ig-item:nth-child(1)  { background: linear-gradient(135deg, #0a1628, #1e4da1); }
-    .ig-item:nth-child(2)  { background: linear-gradient(135deg, #1a3a6e, #2563eb); }
-    .ig-item:nth-child(3)  { background: linear-gradient(135deg, #064e3b, #10b981); }
-    .ig-item:nth-child(4)  { background: linear-gradient(135deg, #7f1d1d, #ef4444); }
-    .ig-item:nth-child(5)  { background: linear-gradient(135deg, #78350f, #f59e0b); }
-    .ig-item:nth-child(6)  { background: linear-gradient(135deg, #312e81, #6366f1); }
-    .ig-item:nth-child(7)  { background: linear-gradient(135deg, #1e3a5f, #3b82f6); }
-    .ig-item:nth-child(8)  { background: linear-gradient(135deg, #134e4a, #14b8a6); }
-    .ig-item:nth-child(9)  { background: linear-gradient(135deg, #4a1d96, #a78bfa); }
-    .ig-item:nth-child(10) { background: linear-gradient(135deg, #1c1917, #78716c); }
-    .ig-item:nth-child(11) { background: linear-gradient(135deg, #0f172a, #1e40af); }
-    .ig-item:nth-child(12) { background: linear-gradient(135deg, #052e16, #16a34a); }
-    .ig-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; position: relative; z-index: 1; }
-    .ig-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 28px; color: rgba(255,255,255,0.7); }
-    .ig-placeholder span { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; text-align: center; padding: 0 8px; }
-    .ig-overlay { position: absolute; inset: 0; background: rgba(10,22,40,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: opacity 0.25s ease; }
-    .ig-item:hover .ig-overlay { opacity: 1; }
-    .ig-item:hover img { transform: scale(1.08); }
-    .ig-overlay-stats { display: flex; gap: 16px; }
-    .ig-overlay-stat { display: flex; align-items: center; gap: 5px; color: var(--white); font-size: 13px; font-weight: 700; }
-    .ig-overlay-caption { font-size: 11px; color: rgba(255,255,255,0.6); text-align: center; padding: 0 12px; line-height: 1.5; max-width: 140px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-    .ig-footer-row { margin-top: 20px; display: flex; align-items: center; justify-content: center; }
-    .ig-view-all { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--muted); text-decoration: none; padding: 10px 24px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--white); transition: all 0.25s; }
-    html.dark .ig-view-all { background: #1a2535; border-color: #1e2d42; color: #64748b; }
-    .ig-view-all:hover { border-color: #dc2743; color: #dc2743; background: #fff5f5; }
-    html.dark .ig-view-all:hover { background: #2d1515; }
+    .sambutan-section { background: var(--white); }
+    html.dark .sambutan-section { background: #141f2e; }
+    .sambutan-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
+    .sambutan-photo-wrap { width: 100%; aspect-ratio: 3/4; border-radius: 20px; overflow: hidden; background: linear-gradient(135deg, var(--blue), var(--accent)); box-shadow: 0 20px 52px rgba(10,22,40,0.18); position: relative; }
+    html.dark .sambutan-photo-wrap { box-shadow: 0 20px 52px rgba(0,0,0,0.4); }
+    .sambutan-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sambutan-photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 72px; }
+    .sambutan-body { display: flex; flex-direction: column; gap: 20px; }
+    .sambutan-text { font-size: 14.5px; line-height: 1.9; color: var(--muted); }
+    .sambutan-name { font-size: 15px; font-weight: 800; color: var(--text); }
+    .sambutan-jabatan { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-    /* ===== RESPONSIVE ===== */
+    .sejarah-section { background: var(--surface); }
+    html.dark .sejarah-section { background: #0f1923; }
+    .sejarah-content { font-size: 15px; line-height: 2; color: var(--muted); }
+    .sejarah-content p + p { margin-top: 16px; }
+
     @media (max-width: 1024px) {
         .news-grid { grid-template-columns: repeat(2, 1fr); }
         .social-grid { grid-template-columns: repeat(2, 1fr); }
@@ -346,56 +373,22 @@
         .wx-bar { padding: 0 20px; }
         .wx-bar-current { padding-right: 12px; }
         .wx-bar-desc { display: none; }
-        .ig-feed { grid-template-columns: repeat(4, 1fr); }
-        .ig-item:nth-child(n+9) { display: none; }
+        .search-box.open { width: 200px; }
+        .header-date { display: none; }
+        .sambutan-grid { grid-template-columns: 1fr; }
+        .sambutan-photo-wrap { aspect-ratio: 1/1; max-width: 280px; margin: 0 auto; }
     }
     @media (max-width: 480px) {
         .hero-content h1 { font-size: 30px; }
         .social-grid { grid-template-columns: 1fr; }
         nav ul li a { padding: 7px 11px; font-size: 12px; }
         .wx-bar-meta { display: none; }
-        .ig-feed { grid-template-columns: repeat(3, 1fr); }
-        .ig-item:nth-child(n+7) { display: none; }
-        .ig-header-row { flex-direction: column; align-items: flex-start; }
+        .search-box.open { width: 160px; }
     }
 </style>
 @endpush
 
 @section('content')
-
-{{-- ===== HEADER ===== --}}
-<header>
-    <a href="{{ route('home') }}" class="logo">
-        <img src="{{ asset('images/new.PNG') }}" alt="Logo Polri">
-        <div class="logo-text">
-            <span>Tribrata News Gunungkidul</span>
-            <span>Polres Gunungkidul</span>
-        </div>
-    </a>
-    <div class="header-right">
-        <nav>
-            <ul>
-                <li><a href="{{ route('home') }}" class="active">Beranda</a></li>
-                <li><a href="{{ route('profile') }}">Profil</a></li>
-                <li><a href="{{ route('news') }}">Tribratanews</a></li>
-                <li><a href="{{ route('information') }}">Informasi Pelayanan</a></li>
-            </ul>
-        </nav>
-        {{-- Dark Mode Toggle --}}
-        <button class="dark-toggle" id="darkToggle" title="Ganti tema" aria-label="Toggle dark mode">
-            <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-            <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-        </button>
-    </div>
-</header>
 
 {{-- ===== WEATHER BAR ===== --}}
 <div class="wx-bar" id="wxBar">
@@ -433,6 +426,14 @@
 {{-- ===== HERO ===== --}}
 <section class="hero">
     <div class="hero-slides-wrapper" id="heroSlidesWrapper">
+        @forelse($heroSlides as $index => $slide)
+        <div class="hero-slide {{ $index === 0 ? 'active' : '' }}"
+             data-caption="{{ $slide->caption ?? '' }}">
+            <img src="{{ Storage::disk('public')->url($slide->foto) }}"
+                 alt="{{ $slide->caption ?? 'Slide '.($index+1) }}"
+                 loading="{{ $index === 0 ? 'eager' : 'lazy' }}">
+        </div>
+        @empty
         <div class="hero-slide active" data-caption="Melayani Masyarakat Gunungkidul">
             <img src="{{ asset('images/hero/slide1.jpg') }}" alt="Slide 1">
         </div>
@@ -445,6 +446,7 @@
         <div class="hero-slide" data-caption="Bersama Menjaga Nusantara">
             <img src="{{ asset('images/hero/slide4.jpg') }}" alt="Slide 4">
         </div>
+        @endforelse
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -459,6 +461,51 @@
     <div class="hero-caption"><span class="hero-caption-text" id="heroCaption"></span></div>
     <div class="hero-progress" id="heroProgress"></div>
 </section>
+
+{{-- ===== SAMBUTAN ===== --}}
+@if($sambutan)
+<section class="sambutan-section">
+    <div class="section-wrap">
+        <div class="section-header fade-up">
+            <span class="eyebrow">Kata Pengantar</span>
+            <h2>Sambutan Kapolres</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="sambutan-grid fade-up">
+            <div class="sambutan-photo-wrap">
+                @if(!empty($kapolres['foto']))
+                    <img src="{{ Storage::url($kapolres['foto']) }}" alt="{{ $kapolres['nama'] }}">
+                @else
+                    <div class="sambutan-photo-placeholder">👮</div>
+                @endif
+            </div>
+            <div class="sambutan-body">
+                <div class="sambutan-text">{!! $sambutan !!}</div>
+                <div>
+                    <div class="sambutan-name">{{ $kapolres['nama'] }}</div>
+                    <div class="sambutan-jabatan">Kapolres Gunungkidul</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- ===== SEJARAH ===== --}}
+@if($sejarah)
+<section class="sejarah-section">
+    <div class="section-wrap">
+        <div class="section-header fade-up">
+            <span class="eyebrow">Latar Belakang</span>
+            <h2>Sejarah Polres Gunungkidul</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="sejarah-content fade-up">
+            {!! $sejarah !!}
+        </div>
+    </div>
+</section>
+@endif
 
 {{-- ===== VISI & MISI ===== --}}
 <section class="vm-section" id="profil">
@@ -496,14 +543,14 @@
             <div class="section-divider"></div>
         </div>
         <div class="news-grid fade-up">
-            @foreach($news as $item)
+            @forelse($news as $item)
             <a href="{{ route('news.show', $item['slug']) }}" class="news-card">
                 <div class="news-image">
-                    @if(isset($item['images']) && count($item['images']) > 0)
+                    @if(!empty($item['images']))
                         <div class="news-slideshow" data-slideshow>
                             @foreach($item['images'] as $index => $image)
                             <div class="news-slide {{ $index === 0 ? 'active' : '' }}">
-                                <img src="{{ asset($image) }}" alt="{{ $item['title'] }}">
+                                <img src="{{ $image }}" alt="{{ $item['title'] }}">
                             </div>
                             @endforeach
                             @if(count($item['images']) > 1)
@@ -514,120 +561,24 @@
                             </div>
                             @endif
                         </div>
+                    @elseif(!empty($item['icon']))
+                        <img src="{{ $item['icon'] }}" alt="{{ $item['title'] }}" style="width:100%;height:100%;object-fit:cover;">
                     @else
-                        <div class="news-icon-placeholder">{{ $item['icon'] }}</div>
+                        <div class="news-icon-placeholder">📰</div>
                     @endif
                 </div>
                 <div class="news-body">
                     <span class="news-date">{{ $item['date'] }}</span>
                     <div class="news-title">{{ $item['title'] }}</div>
-                    <p class="news-excerpt">{{ Str::limit($item['content'], 130) }}</p>
+                    <p class="news-excerpt">{{ $item['excerpt'] }}</p>
                     <span class="news-readmore">Selengkapnya →</span>
                 </div>
             </a>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-{{-- ===== INSTAGRAM FEED ===== --}}
-<section class="ig-section">
-    <div class="section-wrap">
-        <div class="ig-header-row fade-up">
-            <div class="ig-profile">
-                <div class="ig-avatar">
-                    <div class="ig-avatar-inner">
-                        <img src="{{ asset('images/new.PNG') }}" alt="IG Profile" onerror="this.parentElement.innerHTML='📷'">
-                    </div>
-                </div>
-                <div class="ig-profile-text">
-                    <div class="ig-username">
-                        polres.gunungkidul
-                        <span class="ig-verified">✓</span>
-                    </div>
-                    <div class="ig-stats">
-                        <span class="ig-stat"><strong>2.4K</strong> postingan</span>
-                        <span class="ig-stat"><strong>18.7K</strong> followers</span>
-                        <span class="ig-stat"><strong>412</strong> following</span>
-                    </div>
-                </div>
-            </div>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-follow-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-                Follow di Instagram
-            </a>
-        </div>
-        <div class="ig-feed fade-up">
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post1.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">👮<span>Operasi Kamtibmas</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 312</span><span class="ig-overlay-stat">💬 24</span></div><p class="ig-overlay-caption">Operasi keamanan dan ketertiban masyarakat</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post2.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🚦<span>Lalu Lintas</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 278</span><span class="ig-overlay-stat">💬 18</span></div><p class="ig-overlay-caption">Pengaturan arus lalu lintas di pusat kota</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post3.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🤝<span>Bakti Sosial</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 445</span><span class="ig-overlay-stat">💬 36</span></div><p class="ig-overlay-caption">Kegiatan bakti sosial bersama masyarakat</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post4.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🏫<span>Polisi Sahabat Anak</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 521</span><span class="ig-overlay-stat">💬 47</span></div><p class="ig-overlay-caption">Program Polisi Sahabat Anak di sekolah</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post5.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">📋<span>Pelayanan SKCK</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 198</span><span class="ig-overlay-stat">💬 12</span></div><p class="ig-overlay-caption">Pelayanan SKCK cepat dan transparan</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post6.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🌄<span>Gunungkidul</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 387</span><span class="ig-overlay-stat">💬 29</span></div><p class="ig-overlay-caption">Menjaga keindahan wisata Gunungkidul</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post7.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🏋️<span>Apel Pagi</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 234</span><span class="ig-overlay-stat">💬 15</span></div><p class="ig-overlay-caption">Apel pagi seluruh personel Polres</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post8.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🚓<span>Patroli</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 302</span><span class="ig-overlay-stat">💬 21</span></div><p class="ig-overlay-caption">Patroli malam menjaga keamanan warga</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post9.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">📢<span>Sosialisasi</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 176</span><span class="ig-overlay-stat">💬 9</span></div><p class="ig-overlay-caption">Sosialisasi keamanan kepada warga desa</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post10.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🏆<span>Prestasi</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 489</span><span class="ig-overlay-stat">💬 53</span></div><p class="ig-overlay-caption">Penghargaan untuk anggota berprestasi</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post11.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">💉<span>Vaksinasi</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 265</span><span class="ig-overlay-stat">💬 18</span></div><p class="ig-overlay-caption">Polres mendukung program vaksinasi</p></div>
-            </a>
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-item">
-                <img src="{{ asset('images/ig/post12.jpg') }}" alt="" onerror="this.style.display='none'">
-                <div class="ig-placeholder">🌿<span>Lingkungan</span></div>
-                <div class="ig-overlay"><div class="ig-overlay-stats"><span class="ig-overlay-stat">❤️ 341</span><span class="ig-overlay-stat">💬 27</span></div><p class="ig-overlay-caption">Polres peduli lingkungan hidup</p></div>
-            </a>
-        </div>
-        <div class="ig-footer-row fade-up">
-            <a href="https://www.instagram.com/polres.gunungkidul/" target="_blank" rel="noopener" class="ig-view-all">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-                Lihat semua di Instagram
-            </a>
+            @empty
+            <p style="color: var(--muted); font-size: 14px; grid-column: 1/-1;">
+                Belum ada berita yang dipublikasikan.
+            </p>
+            @endforelse
         </div>
     </div>
 </section>
@@ -642,140 +593,82 @@
             <div class="section-divider"></div>
         </div>
         <div class="social-grid fade-up">
-            @foreach($socialMedia as $social)
-            <a href="{{ $social['url'] }}" target="_blank" rel="noopener" class="social-card social-card--{{ $social['platform'] ?? strtolower(str_replace(' ', '', $social['name'])) }}">
+            @forelse($socialMedia as $sm)
+            <a href="{{ $sm->url }}" target="_blank" rel="noopener" class="social-card">
                 <div class="social-icon-wrap">
-                    @php $platform = $social['platform'] ?? strtolower(str_replace([' ', '/'], '', $social['name'])); @endphp
-
-                    @if($platform === 'instagram')
-                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-                            <defs><radialGradient id="ig-grad" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#ffd600"/><stop offset="25%" stop-color="#ff7a00"/><stop offset="50%" stop-color="#ff0069"/><stop offset="75%" stop-color="#d300c5"/><stop offset="100%" stop-color="#7638fa"/></radialGradient></defs>
-                            <rect width="48" height="48" rx="12" fill="url(#ig-grad)"/>
-                            <rect x="13" y="13" width="22" height="22" rx="6" fill="none" stroke="white" stroke-width="2.5"/>
-                            <circle cx="24" cy="24" r="5.5" fill="none" stroke="white" stroke-width="2.5"/>
-                            <circle cx="34" cy="14" r="1.6" fill="white"/>
-                        </svg>
-                    @elseif($platform === 'facebook')
-                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-                            <rect width="48" height="48" rx="12" fill="#1877F2"/>
-                            <path d="M32 24h-5v-3c0-1.4.7-2 2-2h3v-5h-4c-4 0-6 2.5-6 6v4h-4v5h4v13h5V29h3.5l.5-5z" fill="white"/>
-                        </svg>
-                    @elseif($platform === 'youtube')
-                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-                            <rect width="48" height="48" rx="12" fill="#FF0000"/>
-                            <path d="M38.5 17.5s-.4-2.5-1.6-3.6c-1.5-1.6-3.2-1.6-4-1.7C28.8 12 24 12 24 12s-4.8 0-8.9.2c-.8.1-2.5.1-4 1.7-1.2 1.1-1.6 3.6-1.6 3.6S9 20.3 9 23.1v2.6c0 2.8.5 5.6.5 5.6s.4 2.5 1.6 3.6c1.5 1.6 3.5 1.5 4.4 1.7C18.5 37 24 37 24 37s4.8 0 8.9-.4c.8-.1 2.5-.1 4-1.7 1.2-1.1 1.6-3.6 1.6-3.6s.5-2.8.5-5.6v-2.6c0-2.8-.5-5.6-.5-5.6zm-15.9 11.4v-9.8l8.6 4.9-8.6 4.9z" fill="white"/>
-                        </svg>
-                    @elseif($platform === 'twitter' || $platform === 'x')
-                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-                            <rect width="48" height="48" rx="12" fill="#000000"/>
-                            <path d="M26.4 22.3L34.8 13h-2L25.5 21l-6.6-8H11l8.8 12.8L11 35h2l7.7-9 6.2 9H35L26.4 22.3zm-2.7 3.2l-.9-1.3-7.1-10.1h3l5.7 8.1.9 1.3 7.4 10.6h-3l-6.1-8.6z" fill="white"/>
-                        </svg>
-                    @elseif($platform === 'tiktok')
-                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-                            <rect width="48" height="48" rx="12" fill="#010101"/>
-                            <path d="M34 18.5c-1.8-.5-3.2-1.7-4-3.3v14.3c0 3.5-2.8 6.3-6.3 6.3s-6.3-2.8-6.3-6.3 2.8-6.3 6.3-6.3c.3 0 .7 0 1 .1v4.2c-.3-.1-.6-.1-1-.1-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5 2.5-1.1 2.5-2.5V11h4c.4 2.8 2.6 4.9 5.3 5.1v2.4h-1.5z" fill="white"/>
-                        </svg>
-                    @elseif($platform === 'whatsapp')
-                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-                            <rect width="48" height="48" rx="12" fill="#25D366"/>
-                            <path d="M24 10C16.3 10 10 16.3 10 24c0 2.4.6 4.7 1.8 6.8L10 38l7.5-1.8c2 1.1 4.2 1.7 6.5 1.7 7.7 0 14-6.3 14-14S31.7 10 24 10zm7.5 19.3c-.3.9-1.8 1.7-2.5 1.8-.7.1-1.4.3-4.5-.9-3.8-1.5-6.2-5.4-6.4-5.6-.2-.3-1.5-2-.1-3.5 1-1.2 1.9-.9 2.5-.9.6 0 1 .1 1.4 0 .5-.1 1 0 1.5 1.2.5 1.2 1.5 4.1 1.7 4.4.2.3.3.7.1 1.1-.4.8-1 .8-.7 1.4.3.6 1.5 2.3 3.2 2.8 1.7.5 1.7 0 2.3-.6.4-.4.8-.6 1.3-.3.5.4 1.9 1.4 2.2 1.7.4.3.6.5.1 1.4z" fill="white"/>
-                        </svg>
-                    @else
-                        {{ $social['icon'] }}
-                    @endif
+                    @switch(strtolower($sm->name))
+                        @case('instagram')
+                            <svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                                <defs><radialGradient id="ig-grad-{{ $loop->index }}" cx="30%" cy="107%" r="150%">
+                                    <stop offset="0%" stop-color="#ffd600"/>
+                                    <stop offset="25%" stop-color="#ff7a00"/>
+                                    <stop offset="50%" stop-color="#ff0069"/>
+                                    <stop offset="100%" stop-color="#7638fa"/>
+                                </radialGradient></defs>
+                                <rect width="48" height="48" rx="12" fill="url(#ig-grad-{{ $loop->index }})"/>
+                                <rect x="13" y="13" width="22" height="22" rx="6" fill="none" stroke="white" stroke-width="2.5"/>
+                                <circle cx="24" cy="24" r="5.5" fill="none" stroke="white" stroke-width="2.5"/>
+                                <circle cx="34" cy="14" r="1.6" fill="white"/>
+                            </svg>
+                            @break
+                        @case('facebook')
+                            <svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#1877F2"/>
+                                <path d="M32 24h-5v-3c0-1.4.7-2 2-2h3v-5h-4c-4 0-6 2.5-6 6v4h-4v5h4v13h5V29h3.5l.5-5z" fill="white"/>
+                            </svg>
+                            @break
+                        @case('youtube')
+                            <svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#FF0000"/>
+                                <path d="M38.5 17.5s-.4-2.5-1.6-3.6c-1.5-1.6-3.2-1.6-4-1.7C28.8 12 24 12 24 12s-4.8 0-8.9.2c-.8.1-2.5.1-4 1.7-1.2 1.1-1.6 3.6-1.6 3.6S9 20.3 9 23.1v2.6c0 2.8.5 5.6.5 5.6s.4 2.5 1.6 3.6c1.5 1.6 3.5 1.5 4.4 1.7C18.5 37 24 37 24 37s4.8 0 8.9-.4c.8-.1 2.5-.1 4-1.7 1.2-1.1 1.6-3.6 1.6-3.6s.5-2.8.5-5.6v-2.6c0-2.8-.5-5.6-.5-5.6zm-15.9 11.4v-9.8l8.6 4.9-8.6 4.9z" fill="white"/>
+                            </svg>
+                            @break
+                        @case('tiktok')
+                            <svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#010101"/>
+                                <path d="M34 18.5c-1.8-.5-3.2-1.7-4-3.3v14.3c0 3.5-2.8 6.3-6.3 6.3s-6.3-2.8-6.3-6.3 2.8-6.3 6.3-6.3c.3 0 .7 0 1 .1v4.2c-.3-.1-.6-.1-1-.1-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5 2.5-1.1 2.5-2.5V11h4c.4 2.8 2.6 4.9 5.3 5.1v2.4h-1.5z" fill="white"/>
+                            </svg>
+                            @break
+                        @case('twitter/x')
+                        @case('twitter')
+                        @case('x')
+                            <svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#000000"/>
+                                <path d="M26.37 21.85L34.2 13h-1.85l-6.82 7.88L20.27 13H14l8.22 11.93L14 35.5h1.85l7.19-8.31 5.74 8.31H35L26.37 21.85zm-2.55 2.95l-.83-1.19L16.52 14.4h2.86l5.35 7.65.83 1.19 6.95 9.93h-2.86l-5.83-8.37z" fill="white"/>
+                            </svg>
+                            @break
+                        @case('whatsapp')
+                            <svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#25D366"/>
+                                <path d="M24 11C16.82 11 11 16.82 11 24c0 2.27.61 4.4 1.67 6.24L11 37l6.95-1.64A13 13 0 0 0 24 37c7.18 0 13-5.82 13-13S31.18 11 24 11zm6.41 17.29c-.27.76-1.57 1.45-2.14 1.54-.55.09-1.23.13-1.99-.12-.46-.15-1.05-.35-1.8-.68-3.17-1.37-5.23-4.56-5.39-4.77-.16-.21-1.29-1.72-1.29-3.28s.82-2.33 1.11-2.65c.29-.32.63-.4.84-.4l.6.01c.19 0 .45-.07.7.54l1.01 2.46c.09.22.15.48.01.77l-.38.56-.56.62c.18.3.74 1.14 1.6 1.86 1.1.93 2.02 1.22 2.3 1.36.29.14.46.12.63-.07l.86-1.01c.22-.28.44-.22.74-.13l2.33.99c.55.22.55.44.55.63 0 .19-.02 1.01-.29 1.77z" fill="white"/>
+                            </svg>
+                            @break
+                        @default
+                            <svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#2563eb"/>
+                                <path d="M24 12C17.37 12 12 17.37 12 24s5.37 12 12 12 12-5.37 12-12S30.63 12 24 12zm0 2c2.28 0 4.38.76 6.06 2.03l-15.03 15.03A9.94 9.94 0 0 1 14 24c0-5.52 4.48-10 10-10zm0 20c-2.28 0-4.38-.76-6.06-2.03l15.03-15.03A9.94 9.94 0 0 1 34 24c0 5.52-4.48 10-10 10z" fill="white"/>
+                            </svg>
+                    @endswitch
                 </div>
                 <div>
-                    <div class="social-name">{{ $social['name'] }}</div>
-                    <div class="social-handle">{{ $social['handle'] }}</div>
+                    <div class="social-name">{{ $sm->name }}</div>
+                    <div class="social-handle">{{ $sm->handle }}</div>
                 </div>
             </a>
-            @endforeach
+            @empty
+            <p style="color: var(--muted); font-size: 14px; grid-column: 1/-1;">
+                Belum ada media sosial yang ditambahkan.
+            </p>
+            @endforelse
         </div>
     </div>
 </section>
-
-{{-- ===== FOOTER ===== --}}
-<footer id="kontak">
-    <div class="footer-location">
-        <div class="footer-location-inner">
-            <div class="footer-location-left">
-                <div class="location-icon-wrap">📍</div>
-                <div>
-                    <div class="location-label">Lokasi Polres Gunungkidul</div>
-                    <div class="location-address">Jln. MGR Sugiyopranoto No.15, Wonosari</div>
-                    <div class="location-city">Kabupaten Gunungkidul, D.I. Yogyakarta 55813</div>
-                </div>
-            </div>
-            <a href="https://maps.app.goo.gl/Xv8tKdyoVjMf4DkRA" target="_blank" rel="noopener" class="maps-btn">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Buka di Google Maps
-            </a>
-        </div>
-    </div>
-    <div class="footer-main">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <a href="{{ route('home') }}" class="logo">
-                    <img src="{{ asset('images/new.PNG') }}" alt="Logo">
-                    <div class="logo-text"><span>Tribrata News Gunungkidul</span><span>Polres Gunungkidul</span></div>
-                </a>
-                <p>{{ $contact['address'] }}, {{ $contact['city'] }}. Melayani seluruh masyarakat Gunungkidul dengan profesional dan terpercaya.</p>
-            </div>
-            <div class="footer-col">
-                <h5>Kontak</h5>
-                <p>📧 {{ $contact['email'] }}</p>
-                <p>📞 {{ $contact['phone'] }}</p>
-                <p>🚨 {{ $contact['hotline'] }}</p>
-                <p>🕐 {{ $contact['hours'] }}</p>
-            </div>
-            <div class="footer-col">
-                <h5>Navigasi</h5>
-                @foreach($aboutLinks as $link)
-                <a href="{{ $link['url'] }}">{{ $link['name'] }}</a>
-                @endforeach
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <span>© {{ date('Y') }} Polres Gunungkidul — Melayani Dengan Hati</span>
-            <span>Tribrata News Gunungkidul</span>
-        </div>
-    </div>
-</footer>
 
 @endsection
 
 @push('scripts')
 <script>
-// ===== DARK MODE — harus paling atas =====
-(function () {
-    const html = document.documentElement;
-    const btn  = document.getElementById('darkToggle');
-    const KEY  = 'theme';
-
-    function applyTheme(dark) {
-        dark ? html.classList.add('dark') : html.classList.remove('dark');
-    }
-
-    // Init dari localStorage
-    applyTheme(localStorage.getItem(KEY) === 'dark');
-
-    // Toggle on click
-    btn.addEventListener('click', function () {
-        const isDark = html.classList.toggle('dark');
-        localStorage.setItem(KEY, isDark ? 'dark' : 'light');
-    });
-
-    // Ikuti preferensi sistem jika belum pernah dipilih manual
-    if (!localStorage.getItem(KEY)) {
-        const mq = window.matchMedia('(prefers-color-scheme: dark)');
-        applyTheme(mq.matches);
-        mq.addEventListener('change', e => {
-            if (!localStorage.getItem(KEY)) applyTheme(e.matches);
-        });
-    }
-})();
-
-// ===== HERO SLIDESHOW =====
+// ===== HERO SLIDER =====
 (function () {
     const wrapper     = document.getElementById('heroSlidesWrapper');
     const slides      = wrapper.querySelectorAll('.hero-slide');
@@ -862,20 +755,7 @@ function initNewsSlideshow() {
 }
 document.addEventListener('DOMContentLoaded', initNewsSlideshow);
 
-// ===== INSTAGRAM — hide placeholder when real image loads =====
-document.querySelectorAll('.ig-item img').forEach(img => {
-    if (img.complete && img.naturalWidth > 0) {
-        const ph = img.nextElementSibling;
-        if (ph && ph.classList.contains('ig-placeholder')) ph.style.display = 'none';
-    } else {
-        img.addEventListener('load', function () {
-            const ph = this.nextElementSibling;
-            if (ph && ph.classList.contains('ig-placeholder')) ph.style.display = 'none';
-        });
-    }
-});
-
-// ===== CUACA REAL-TIME =====
+// ===== WEATHER =====
 (function () {
     const LAT = -7.9408, LON = 110.5993, TZ = 'Asia%2FJakarta';
     const WMO = {
@@ -920,13 +800,13 @@ document.querySelectorAll('.ig-item img').forEach(img => {
     $btn.addEventListener('click', load); load(); setInterval(load, 10*60*1000);
 })();
 
-// ===== SCROLL ANIMATION =====
+// ===== FADE UP OBSERVER =====
 const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-// Smooth anchor scroll
+// ===== SMOOTH SCROLL =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
