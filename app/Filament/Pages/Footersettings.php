@@ -29,13 +29,9 @@ class FooterSettings extends Page
             'telepon'       => $profile?->telepon,
             'email'         => $profile?->email,
             'jam_pelayanan' => $profile?->jam_pelayanan,
-            'hotline'       => $profile?->hotline       ?? '110 (Darurat)',
-            'maps_url'      => $profile?->maps_url      ?? 'https://maps.app.goo.gl/Xv8tKdyoVjMf4DkRA',
-            'copyright'     => $profile?->copyright     ?? '',
-            'url_instagram' => $profile?->url_instagram ?? 'https://www.instagram.com/polres.gunungkidul/',
-            'url_facebook'  => $profile?->url_facebook  ?? 'https://www.facebook.com/polresgunungkidul',
-            'url_youtube'   => $profile?->url_youtube   ?? 'https://www.youtube.com/@polresgunungkidul',
-            'url_tiktok'    => $profile?->url_tiktok    ?? 'https://www.tiktok.com/@polres.gunungkidul',
+            'hotline'       => $profile?->hotline  ?? '110 (Darurat)',
+            'maps_url'      => $profile?->maps_url ?? 'https://maps.app.goo.gl/Xv8tKdyoVjMf4DkRA',
+            'copyright'     => $profile?->copyright ?? '',
         ];
 
         $this->form->fill($this->data);
@@ -86,28 +82,6 @@ class FooterSettings extends Page
                             ->placeholder('24 Jam'),
                     ]),
 
-                Forms\Components\Section::make('Media Sosial')
-                    ->icon('heroicon-o-share')
-                    ->columns(2)
-                    ->schema([
-                        Forms\Components\TextInput::make('url_instagram')
-                            ->label('Instagram URL')
-                            ->url()
-                            ->prefixIcon('heroicon-o-link'),
-                        Forms\Components\TextInput::make('url_facebook')
-                            ->label('Facebook URL')
-                            ->url()
-                            ->prefixIcon('heroicon-o-link'),
-                        Forms\Components\TextInput::make('url_youtube')
-                            ->label('YouTube URL')
-                            ->url()
-                            ->prefixIcon('heroicon-o-link'),
-                        Forms\Components\TextInput::make('url_tiktok')
-                            ->label('TikTok URL')
-                            ->url()
-                            ->prefixIcon('heroicon-o-link'),
-                    ]),
-
                 Forms\Components\Section::make('Teks Copyright')
                     ->icon('heroicon-o-document-text')
                     ->schema([
@@ -138,10 +112,6 @@ class FooterSettings extends Page
         $profile->hotline       = $validated['hotline'];
         $profile->maps_url      = $validated['maps_url'];
         $profile->copyright     = $validated['copyright'];
-        $profile->url_instagram = $validated['url_instagram'];
-        $profile->url_facebook  = $validated['url_facebook'];
-        $profile->url_youtube   = $validated['url_youtube'];
-        $profile->url_tiktok    = $validated['url_tiktok'];
         $profile->save();
 
         Notification::make()

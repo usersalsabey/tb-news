@@ -172,7 +172,6 @@ footer {
                 <div class="location-text">
                     <div class="location-label">Lokasi {{ $footerProfile->nama_instansi ?? 'Polres Gunungkidul' }}</div>
                     <div class="location-address">{{ $footerProfile->alamat ?? 'Jln. MGR Sugiyopranoto No.15, Wonosari' }}</div>
-                    <div class="location-city">Kabupaten Gunungkidul, D.I. Yogyakarta 55813</div>
                 </div>
             </div>
 

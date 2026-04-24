@@ -13,18 +13,19 @@ use Illuminate\Support\Str;
 
 class NewsResource extends Resource
 {
-    protected static ?string $model           = News::class;
-    protected static ?string $navigationIcon  = 'heroicon-o-newspaper';
-    protected static ?string $navigationGroup = 'Konten';
-    protected static ?string $navigationLabel = 'Berita';
-    protected static ?string $modelLabel      = 'Berita';
+    protected static ?string $model            = News::class;
+    protected static ?string $navigationIcon   = 'heroicon-o-newspaper';
+    protected static ?string $navigationGroup  = 'Konten';
+    protected static ?string $navigationLabel  = 'Berita';
+    protected static ?string $modelLabel       = 'Berita';
     protected static ?string $pluralModelLabel = 'Berita';
-    protected static ?int    $navigationSort  = 1;
+    protected static ?int    $navigationSort   = 1;
 
     public static function form(Form $form): Form
     {
         return $form->schema([
 
+            // ── Informasi Utama ──────────────────────────────────────────
             Forms\Components\Section::make('Informasi Utama')
                 ->schema([
                     Forms\Components\TextInput::make('title')
@@ -65,6 +66,7 @@ class NewsResource extends Resource
                         ]),
                 ]),
 
+            // ── Kategori & Detail ────────────────────────────────────────
             Forms\Components\Section::make('Kategori & Detail')
                 ->schema([
                     Forms\Components\Select::make('category')
@@ -107,6 +109,7 @@ class NewsResource extends Resource
                         ->columnSpanFull(),
                 ])->columns(2),
 
+            // ── Gambar Berita ────────────────────────────────────────────
             Forms\Components\Section::make('Gambar Berita')
                 ->schema([
                     Forms\Components\FileUpload::make('foto')
@@ -121,6 +124,49 @@ class NewsResource extends Resource
                         ->openable()
                         ->downloadable()
                         ->columnSpanFull(),
+                ]),
+
+            // ── Video Berita ─────────────────────────────────────────────
+            Forms\Components\Section::make('Video Berita')
+                ->icon('heroicon-o-video-camera')
+                ->description('Pilih salah satu: upload file video ATAU masukkan URL YouTube/TikTok.')
+                ->schema([
+
+                    // Opsi 1 — Upload file video langsung
+                    Forms\Components\FileUpload::make('video_path')
+                        ->label('Upload File Video')
+                        ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/ogg'])
+                        ->maxSize(102400) // 100 MB
+                        ->directory('news/videos')
+                        ->disk('public')
+                        ->downloadable()
+                        ->helperText('Format: MP4, WebM, OGG. Maks. 100 MB.')
+                        ->columnSpanFull()
+                        ->live()
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            // Kosongkan URL kalau ada file yang diupload
+                            if ($state) $set('video_url', null);
+                        }),
+
+                    // Divider teks
+                    Forms\Components\Placeholder::make('atau')
+                        ->label('')
+                        ->content('— ATAU masukkan URL YouTube / TikTok —')
+                        ->columnSpanFull(),
+
+                    // Opsi 2 — URL YouTube / TikTok
+                    Forms\Components\TextInput::make('video_url')
+                        ->label('URL YouTube / TikTok')
+                        ->url()
+                        ->placeholder('https://www.youtube.com/watch?v=... atau https://www.tiktok.com/@.../video/...')
+                        ->helperText('Tempel link video YouTube atau TikTok.')
+                        ->columnSpanFull()
+                        ->live()
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            // Kosongkan file upload kalau URL diisi
+                            if ($state) $set('video_path', null);
+                        }),
+
                 ]),
         ]);
     }
@@ -161,6 +207,22 @@ class NewsResource extends Resource
                         default       => $state,
                     }),
 
+                // Kolom indikator video
+                Tables\Columns\IconColumn::make('video_url')
+                    ->label('Video')
+                    ->icon(fn ($state, $record) =>
+                        ($state || $record->video_path)
+                            ? 'heroicon-o-video-camera'
+                            : 'heroicon-o-minus'
+                    )
+                    ->color(fn ($state, $record) =>
+                        ($state || $record->video_path) ? 'success' : 'gray'
+                    )
+                    ->tooltip(fn ($state, $record) =>
+                        $state ? 'URL: ' . $state
+                            : ($record->video_path ? 'File upload' : 'Tidak ada video')
+                    ),
+
                 Tables\Columns\TextColumn::make('source')
                     ->label('Sumber')
                     ->limit(30)
@@ -194,6 +256,14 @@ class NewsResource extends Resource
                     ->label('Status Publikasi')
                     ->trueLabel('Sudah Publish')
                     ->falseLabel('Draft'),
+
+                // Filter berita yang punya video
+                Tables\Filters\Filter::make('has_video')
+                    ->label('Ada Video')
+                    ->query(fn ($query) => $query->where(function ($q) {
+                        $q->whereNotNull('video_url')
+                          ->orWhereNotNull('video_path');
+                    })),
             ])
             ->actions([
                 Tables\Actions\Action::make('toggle')

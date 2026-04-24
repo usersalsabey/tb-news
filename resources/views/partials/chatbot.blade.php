@@ -384,13 +384,15 @@
 
         if (mode === 'split') {
             // Tampilkan pilihan Online / Datang Langsung di dalam chat
-            const label   = btn.dataset.label   ?? 'layanan ini';
+            const label    = btn.dataset.label   ?? 'layanan ini';
             const onlineQ  = btn.dataset.online  ?? '';
             const offlineQ = btn.dataset.offline ?? '';
             userSay(label);
             showModeOptions(label, onlineQ, offlineQ);
         } else {
-            // Langsung kirim tanpa split
+            // ✅ FIX: tampilkan label tombol sebagai bubble user, lalu kirim pertanyaan lengkap ke API
+            const label = btn.textContent.trim();
+            userSay(label);
             handleInput(btn.dataset.q ?? '');
         }
     });
@@ -406,7 +408,6 @@
         const div = document.createElement('div');
         div.className = 'cb-msg cb-bot';
 
-        // Buat bubble dulu, lalu pasang tombol via JS (aman, tanpa innerHTML injection)
         const avatar = document.createElement('div');
         avatar.className = 'cb-msg-avatar';
         avatar.textContent = '👮';
@@ -446,12 +447,14 @@
         btnOnline.addEventListener('click', () => {
             if (isLoading) return;
             lockButtons();
+            userSay('🌐 Online (Aplikasi)');
             handleInput(onlineQ);
         });
 
         btnOffline.addEventListener('click', () => {
             if (isLoading) return;
             lockButtons();
+            userSay('🏢 Datang Langsung');
             handleInput(offlineQ);
         });
     }
@@ -461,8 +464,7 @@
         text = text.trim();
         if (!text || isLoading) return;
 
-        // Hanya tambahkan pesan user jika bukan dari mode-split
-        // (mode-split sudah render via userSay sebelum showModeOptions)
+        // Hanya tampilkan bubble user jika pesan berasal dari input keyboard
         const fromInput = $input.value.trim() === text;
         if (fromInput) userSay(text);
         $input.value = '';

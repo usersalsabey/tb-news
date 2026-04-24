@@ -82,6 +82,42 @@
     .share-btn.wa { background:#25d366; color:#fff; }
     .share-btn.wa:hover { background:#1db954; }
 
+    /* ─── Video Section ─── */
+    .video-section {
+        padding: 0 40px 32px;
+        border-bottom: 1px solid var(--border);
+    }
+    html.dark .video-section { border-color: #1e2d42; }
+    .video-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 14px;
+    }
+    html.dark .video-label { color: #60a5fa; }
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 */
+        border-radius: 14px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    }
+    .video-wrapper iframe,
+    .video-wrapper video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
     /* ─── Sidebar ─── */
     .sidebar { display:flex; flex-direction:column; gap:20px; }
     .sidebar-card { background:var(--white); border-radius:16px; border:1px solid var(--border); overflow:hidden; }
@@ -128,13 +164,11 @@
 
     /* ─── Responsive ─── */
     @media (max-width:900px) { .page-wrap{grid-template-columns:1fr} .hero-title{font-size:26px} .hero-inner{padding:0 28px 32px} .footer-location{padding:18px 28px} .footer-main{padding:44px 28px 28px} .footer-grid{grid-template-columns:1fr 1fr} }
-    @media (max-width:640px) { .page-wrap{padding:24px 20px 60px} .article-content{padding:24px 20px 28px} .article-footer{padding:16px 20px} .hero{height:320px} .hero-title{font-size:22px} .gallery-main{height:240px} .footer-grid{grid-template-columns:1fr} .footer-bottom{flex-direction:column;gap:8px;text-align:center} }
+    @media (max-width:640px) { .page-wrap{padding:24px 20px 60px} .article-content{padding:24px 20px 28px} .article-footer{padding:16px 20px} .hero{height:320px} .hero-title{font-size:22px} .gallery-main{height:240px} .footer-grid{grid-template-columns:1fr} .footer-bottom{flex-direction:column;gap:8px;text-align:center} .video-section{padding:0 20px 24px} }
 </style>
 @endpush
 
 @section('content')
-
-{{-- ✅ TIDAK ADA <header> di sini — sudah di-handle layouts.app via navbar.blade.php --}}
 
 {{-- Weather Bar --}}
 <div class="wx-bar">
@@ -167,7 +201,6 @@
 <section class="hero">
     <div class="hero-bg">
         @if(!empty($news['images']) && count($news['images']) > 0)
-            {{-- ✅ URL sudah di-resolve di controller, tidak perlu asset() --}}
             <img src="{{ $news['images'][0] }}" alt="{{ $news['title'] }}">
         @elseif(!empty($news['icon']))
             <img src="{{ $news['icon'] }}" alt="{{ $news['title'] }}">
@@ -214,7 +247,6 @@
         @if(!empty($news['images']) && count($news['images']) > 0)
         <div class="gallery">
             <div class="gallery-main">
-                {{-- ✅ URL sudah di-resolve di controller --}}
                 <img src="{{ $news['images'][0] }}" alt="{{ $news['title'] }}" id="mainImg">
             </div>
             @if(count($news['images']) > 1)
@@ -229,7 +261,6 @@
         </div>
 
         @elseif(!empty($news['icon']))
-        {{-- ✅ URL sudah di-resolve di controller --}}
         <div class="gallery-main">
             <img src="{{ $news['icon'] }}" alt="{{ $news['title'] }}"
                  onerror="this.parentElement.classList.add('cat-{{ $news['category'] }}'); this.style.display='none';">
@@ -238,6 +269,43 @@
         @else
         <div class="gallery-placeholder cat-{{ $news['category'] }}">📰</div>
         @endif
+
+        {{-- ═══════════════════════════════════════════════
+             VIDEO SECTION
+             Prioritas: file upload dulu, kalau tidak ada
+             baru cek URL YouTube / TikTok
+        ════════════════════════════════════════════════ --}}
+        @if(!empty($news['video_path']))
+        <div class="video-section">
+            <div class="video-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                Video Berita
+            </div>
+            <div class="video-wrapper">
+                <video controls preload="metadata">
+                    <source src="{{ asset('storage/' . $news['video_path']) }}" type="video/mp4">
+                    Browser Anda tidak mendukung pemutaran video.
+                </video>
+            </div>
+        </div>
+
+        @elseif(!empty($news['video_embed_url']))
+        <div class="video-section">
+            <div class="video-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                Video Berita
+            </div>
+            <div class="video-wrapper">
+                <iframe
+                    src="{{ $news['video_embed_url'] }}"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+        @endif
+        {{-- ═══════════════════════════════════════════════ --}}
 
         <div class="article-content">
             <p><strong>{{ $news['excerpt'] }}</strong></p>
@@ -259,7 +327,6 @@
             <a href="{{ route('news.show', $item['slug']) }}" class="related-item">
                 <div class="related-thumb">
                     @if(!empty($item['images']) && count($item['images']) > 0)
-                        {{-- ✅ URL sudah di-resolve di controller --}}
                         <img src="{{ $item['images'][0] }}" alt="{{ $item['title'] }}">
                     @elseif(!empty($item['icon']))
                         <img src="{{ $item['icon'] }}" alt="{{ $item['title'] }}"
@@ -347,7 +414,6 @@
 
 @push('scripts')
 <script>
-
 // GALLERY
 function switchImg(src, thumb) {
     document.getElementById('mainImg').src = src;
