@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     npm \
     git \
     curl \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip intl xml
+    && docker-php-ext-install pdo pdo_mysql mbstring zip intl xml gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -27,9 +27,8 @@ RUN npm install && npm run build
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
+
+RUN a2dismod mpm_event && a2enmod mpm_prefork rewrite
 
 EXPOSE 80
