@@ -29,6 +29,8 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-RUN a2dismod mpm_event && a2enmod mpm_prefork rewrite
+RUN a2dismod mpm_event mpm_worker mpm_prefork && a2enmod mpm_prefork rewrite
 
 EXPOSE 80
+
+CMD ["apache2-foreground"]
