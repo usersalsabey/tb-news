@@ -29,10 +29,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 8080
 
-RUN php artisan config:cache && php artisan route:cache
-
-RUN php artisan config:clear
-RUN php artisan cache:clear
-RUN php artisan config:clear
-
-CMD ["sh", "-c", "php artisan migrate --force --graceful && php artisan serve --host=0.0.0.0 --port=8080"]
+CMD ["sh", "-c", "php artisan config:clear && php artisan migrate --force --graceful && php artisan serve --host=0.0.0.0 --port=8080"]
