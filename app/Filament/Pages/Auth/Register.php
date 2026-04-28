@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Auth\Register as BaseRegister;
@@ -21,14 +20,6 @@ class Register extends BaseRegister
                 ->email()
                 ->required()
                 ->unique('users', 'email'),
-
-            Select::make('role')
-                ->label('Role')
-                ->options([
-                    'humas' => 'Humas',
-                ])
-                ->required()
-                ->native(false),
 
             TextInput::make('password')
                 ->label('Password')
