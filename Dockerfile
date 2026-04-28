@@ -29,4 +29,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080"]
+CMD ["sh", "-c", "php artisan migrate --force --graceful && php artisan db:seed --class=RoleSeeder --force 2>/dev/null; php artisan serve --host=0.0.0.0 --port=8080"]
