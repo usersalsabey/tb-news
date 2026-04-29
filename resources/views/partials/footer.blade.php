@@ -1,8 +1,9 @@
 {{--
     ===== FOOTER PARTIAL =====
     Simpan di: resources/views/partials/footer.blade.php
+    Pakai di view manapun dengan: @include('partials.footer')
 --}}
-
+@php $profile = \App\Models\Profile::first(); @endphp
 <style>
 /* ===== FOOTER ===== */
 footer {
@@ -164,31 +165,6 @@ footer {
 
 <footer>
 
-    {{-- ─── LOKASI BANNER ─── --}}
-    <div class="footer-location">
-        <div class="footer-location-inner">
-            <div class="footer-location-left">
-                <div class="location-icon-wrap">📍</div>
-                <div class="location-text">
-                    <div class="location-label">Lokasi {{ $footerProfile->nama_instansi ?? 'Polres Gunungkidul' }}</div>
-                    <div class="location-address">{{ $footerProfile->alamat ?? 'Jln. MGR Sugiyopranoto No.15, Wonosari' }}</div>
-                </div>
-            </div>
-
-            <a href="{{ $footerProfile->maps_url ?? 'https://maps.google.com/?q=Polres+Gunungkidul' }}"
-               target="_blank"
-               rel="noopener"
-               class="maps-btn">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2.2"
-                     stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                </svg>
-                Buka di Google Maps
-            </a>
-        </div>
-    </div>
 
     {{-- ─── FOOTER MAIN ─── --}}
     <div class="footer-main">
@@ -200,18 +176,37 @@ footer {
                     <img src="{{ asset('images/new.PNG') }}" alt="Logo Polri">
                     <div class="logo-text">
                         <span>Tribrata News Gunungkidul</span>
-                        <span>{{ $footerProfile->nama_instansi ?? 'Polres Gunungkidul' }}</span>
+                        <span>Polres Gunungkidul</span>
                     </div>
                 </a>
+                @if($profile?->alamat)
+                    <p>📍 {{ $profile->alamat }}</p>
+                @endif
+                @if($profile?->maps_url)
+    <a href="{{ $profile->maps_url }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; margin-top:12px; padding:9px 16px; background:#2563eb; color:#ffffff; font-size:12.5px; font-weight:700; border-radius:8px; text-decoration:none; transition:all 0.2s; border:1px solid rgba(255,255,255,0.15);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Lihat di Google Maps
+    </a>
+@endif
             </div>
 
             {{-- Kontak --}}
             <div class="footer-col">
                 <h5>Kontak</h5>
-                <p>📧 {{ $contact['email']   ?? 'ppidgunungkidul@gmail.com' }}</p>
-                <p>📞 {{ $contact['phone']   ?? '0851-3375-0875' }}</p>
-                <p>🚨 {{ $contact['hotline'] ?? '110 (Darurat)' }}</p>
-                <p>🕐 {{ $contact['hours']   ?? '24 Jam' }}</p>
+                @if(isset($contact))
+                    <p>📧 {{ $contact['email'] }}</p>
+                    <p>📞 {{ $contact['phone'] }}</p>
+                    <p>🚨 {{ $contact['hotline'] }}</p>
+                    <p>🕐 {{ $contact['hours'] }}</p>
+                @else
+                    <p>📧 ppidgunungkidul@gmail.com</p>
+                    <p>📞 0851-3375-0875</p>
+                    <p>🚨 110 (Darurat)</p>
+                    <p>🕐 24 Jam</p>
+                @endif
             </div>
 
             {{-- Navigasi --}}
@@ -232,7 +227,7 @@ footer {
         </div>
 
         <div class="footer-bottom">
-            <span>© {{ date('Y') }} {{ $footerProfile->copyright ?? 'Polres Gunungkidul — Melayani Dengan Hati' }}</span>
+            <span>© {{ date('Y') }} Polres Gunungkidul — Melayani Dengan Hati</span>
             <span>Tribrata News Gunungkidul</span>
         </div>
     </div>
