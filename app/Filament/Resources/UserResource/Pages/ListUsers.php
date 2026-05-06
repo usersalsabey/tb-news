@@ -13,9 +13,7 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->label('Tambah Admin')
-                ->icon('heroicon-o-plus'),
+            Actions\CreateAction::make(),
         ];
     }
 }

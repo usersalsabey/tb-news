@@ -16,14 +16,4 @@ class EditUser extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-
-    protected function getSavedNotificationTitle(): ?string
-    {
-        return 'Data admin berhasil diperbarui!';
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\InformasiPelayananController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatbotController; 
+use App\Http\Controllers\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +61,6 @@ Route::get('/informasi-pelayanan/wbs',        [InformasiPelayananController::cla
 Route::get('/informasi/perpustakaan-data', [InformasiPelayananController::class, 'perpusdata'])->name('information.perpusdata');
 
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
+
+Route::get('/verify-email', [EmailVerificationController::class, 'verify'])
+    ->name('verify.email');
