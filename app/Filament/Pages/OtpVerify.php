@@ -24,10 +24,10 @@ class OtpVerify extends Page implements HasForms
     public ?array $data = [];
 
     public function mount(): void
-    {
+{
+    try {
         $user = auth()->user();
 
-        // Generate & kirim OTP baru setiap buka halaman ini
         LoginOtp::where('user_id', $user->id)->delete();
 
         $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -40,9 +40,15 @@ class OtpVerify extends Page implements HasForms
 
         Mail::to($user->email)->send(new LoginOtpMail($user, $otp));
 
-        $this->form->fill();
+        \Log::info('OTP sent', ['user' => $user->email, 'otp' => $otp]);
+
+    } catch (\Exception $e) {
+        \Log::error('OTP Error: ' . $e->getMessage());
+        dd('ERROR: ' . $e->getMessage()); // ← tampilkan error
     }
 
+    $this->form->fill();
+}
     public function form(Form $form): Form
     {
         return $form->schema([
