@@ -12,7 +12,7 @@ class EnsureOtpVerified
 {
     public function handle(Request $request, Closure $next)
     {
-        dd('MIDDLEWARE JALAN', $request->path(), auth()->check(), session()->all());
+        ('MIDDLEWARE JALAN', $request->path(), auth()->check(), session()->all());
 
         // Hanya jalan di route admin
         if (!str_starts_with($request->path(), 'admin')) {
