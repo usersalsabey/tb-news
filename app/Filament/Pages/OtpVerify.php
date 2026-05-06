@@ -2,13 +2,15 @@
 
 namespace App\Filament\Pages;
 
+use App\Mail\LoginOtpMail;
 use App\Models\LoginOtp;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Filament\Pages\Page;
 use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Illuminate\Support\Facades\Mail;
 
 class OtpVerify extends Page implements HasForms
 {
@@ -23,6 +25,21 @@ class OtpVerify extends Page implements HasForms
 
     public function mount(): void
     {
+        $user = auth()->user();
+
+        // Generate & kirim OTP baru setiap buka halaman ini
+        LoginOtp::where('user_id', $user->id)->delete();
+
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        LoginOtp::create([
+            'user_id'    => $user->id,
+            'otp'        => $otp,
+            'expires_at' => now()->addMinutes(5),
+        ]);
+
+        Mail::to($user->email)->send(new LoginOtpMail($user, $otp));
+
         $this->form->fill();
     }
 
