@@ -35,23 +35,18 @@ class EnsureOtpVerified
 
         $user = auth()->user();
 
-        // Kirim OTP kalau belum ada yang aktif
-        if (!LoginOtp::where('user_id', $user->id)
-                ->where('expires_at', '>', now())
-                ->exists()) {
+        // Hapus OTP lama & generate baru setiap redirect
+        LoginOtp::where('user_id', $user->id)->delete();
 
-            LoginOtp::where('user_id', $user->id)->delete();
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-            $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        LoginOtp::create([
+            'user_id'    => $user->id,
+            'otp'        => $otp,
+            'expires_at' => now()->addMinutes(5),
+        ]);
 
-            LoginOtp::create([
-                'user_id'    => $user->id,
-                'otp'        => $otp,
-                'expires_at' => now()->addMinutes(5),
-            ]);
-
-            Mail::to($user->email)->send(new LoginOtpMail($user, $otp));
-        }
+        Mail::to($user->email)->send(new LoginOtpMail($user, $otp));
 
         return redirect()->route('filament.admin.pages.otp-verify');
     }
