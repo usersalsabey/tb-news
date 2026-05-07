@@ -24,8 +24,12 @@ class OtpVerify extends Page implements HasForms
     public ?array $data = [];
 
     public function mount(): void
-{
-    try {
+    {
+        if (!auth()->check()) {
+            redirect()->route('filament.admin.auth.login')->send();
+            return;
+        }
+
         $user = auth()->user();
 
         LoginOtp::where('user_id', $user->id)->delete();
@@ -40,15 +44,9 @@ class OtpVerify extends Page implements HasForms
 
         Mail::to($user->email)->send(new LoginOtpMail($user, $otp));
 
-        \Log::info('OTP sent', ['user' => $user->email, 'otp' => $otp]);
-
-    } catch (\Exception $e) {
-        \Log::error('OTP Error: ' . $e->getMessage());
-        dd('ERROR: ' . $e->getMessage()); // ← tampilkan error
+        $this->form->fill();
     }
 
-    $this->form->fill();
-}
     public function form(Form $form): Form
     {
         return $form->schema([
