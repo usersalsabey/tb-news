@@ -17,6 +17,8 @@ class EnsureOtpVerified
             return $next($request);
         }
 
+        dd('middleware jalan', auth()->check(), session('otp_verified'));
+
         if (session('otp_verified')) {
             return $next($request);
         }
