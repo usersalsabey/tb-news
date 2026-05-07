@@ -17,7 +17,6 @@ class ChatbotController extends Controller
             'history' => 'nullable|array|max:20',
         ]);
 
-        // ── Ambil konteks dari DB ──
         $profile    = DB::table('profiles')->first();
         $recentNews = News::where('is_published', true)
             ->orderBy('published_at', 'desc')
@@ -26,32 +25,26 @@ class ChatbotController extends Controller
 
         $systemPrompt = $this->buildSystemPrompt($profile, $recentNews);
 
-        // ── Bangun messages array (format OpenAI / Groq) ──
         $messages = [];
-
         $messages[] = [
             'role'    => 'system',
             'content' => $systemPrompt,
         ];
 
-        // Tambah history percakapan sebelumnya
         foreach (($request->history ?? []) as $msg) {
             if (!isset($msg['role'], $msg['content'])) continue;
             if (!in_array($msg['role'], ['user', 'assistant'])) continue;
-
             $messages[] = [
                 'role'    => $msg['role'],
                 'content' => substr(trim($msg['content']), 0, 500),
             ];
         }
 
-        // Tambah pesan user saat ini
         $messages[] = [
             'role'    => 'user',
             'content' => $request->message,
         ];
 
-        // ── Panggil Groq API ──
         $apiKey = config('services.groq.key');
 
         try {
@@ -71,7 +64,6 @@ class ChatbotController extends Controller
                 $data  = $response->json();
                 $reply = $data['choices'][0]['message']['content']
                     ?? 'Maaf, saya tidak dapat memproses permintaan Anda saat ini.';
-
                 return response()->json(['reply' => trim($reply)]);
             }
 
@@ -86,7 +78,6 @@ class ChatbotController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Chatbot Exception: ' . $e->getMessage());
-
             return response()->json([
                 'reply' => 'Terjadi gangguan koneksi. Silakan coba beberapa saat lagi atau hubungi kami langsung di 110 (darurat).'
             ]);
@@ -124,18 +115,18 @@ Darurat     : 110 (gratis, 24 jam)
 - SKCK iPhone    : https://apps.apple.com/id/app/super-app-polri/id1617509708
 - SIM Android    : https://play.google.com/store/apps/details?id=id.qoin.korlantas.user
 - SIM iPhone     : https://apps.apple.com/id/app/digital-korlantas-polri/id1565558949
-- SAMSAT Android : https://play.google.com/store/apps/details?id=id.go.samsat
-- SAMSAT iPhone  : https://apps.apple.com/id/app/samsat-digital-nasional/id1547657319
+- SAMSAT Android : https://play.google.com/store/apps/details?id=app.signal.id
+- SAMSAT iPhone  : https://apps.apple.com/id/app/signal-samsat-digital-nasional/id1587653489?l=id
 - Laporan Online : https://dumas.polri.go.id
 - WBS Pengaduan  : https://wbs.polri.go.id
 - Penerimaan     : https://penerimaan.polri.go.id
-- Perpusdata     : https://bit.ly/perpusdatapolresgk
-- Kritik & Saran : https://bit.ly/survepolresgk
+- Perpusdata     : https://forms.gle/kjnbpFhBuwqXHTc48
+- Kritik & Saran : https://esurveypelayanan.polri.go.id/#/reg/1693126045675286131
 - Lokasi Maps    : https://maps.app.goo.gl/Xv8tKdyoVjMf4DkRA
 
 == PERPUSDATA & PERMINTAAN DATA ==
 Perpusdata adalah perpustakaan data resmi {$nama} yang memuat berbagai data dan statistik kepolisian yang dapat diakses publik.
-Link Perpusdata : https://bit.ly/perpusdatapolresgk
+Link Perpusdata : https://forms.gle/kjnbpFhBuwqXHTc48
 
 Kategori data yang tersedia di Perpusdata antara lain:
 - Data kriminalitas dan kecelakaan lalu lintas
@@ -147,10 +138,10 @@ Kategori data yang tersedia di Perpusdata antara lain:
 
 Untuk data yang bersifat sangat spesifik, sensitif, atau tidak tersedia secara publik di Perpusdata,
 masyarakat dapat mengajukan permohonan resmi melalui:
-- Form Permohonan Data (PPID) : https://forms.gle/dummy-ppid-form-link   ← GANTI DENGAN LINK ASLI
-- WhatsApp / Telepon          : {$telp}
-- Email resmi                 : {$email}
-- Datang langsung             : {$alamat} (lihat Maps: https://maps.app.goo.gl/Xv8tKdyoVjMf4DkRA)
+- Form Permohonan Data : https://forms.gle/kjnbpFhBuwqXHTc48
+- WhatsApp / Telepon   : {$telp}
+- Email resmi          : {$email}
+- Datang langsung      : {$alamat} (lihat Maps: https://maps.app.goo.gl/Xv8tKdyoVjMf4DkRA)
   Jam layanan: Senin-Kamis 08.00-15.00 WIB | Jumat 08.00-11.30 WIB
 
 == PANDUAN LAYANAN: ONLINE VS DATANG LANGSUNG ==
@@ -178,9 +169,9 @@ Bawa: KTP asli, SIM lama (untuk perpanjangan), pas foto, serta formulir yang sud
 Jam layanan sesuai jadwal SATPAS setempat.
 
 [SAMSAT ONLINE]
-Unduh aplikasi SAMSAT Digital Nasional:
-Android: https://play.google.com/store/apps/details?id=id.go.samsat
-iPhone : https://apps.apple.com/id/app/samsat-digital-nasional/id1547657319
+Unduh aplikasi SIGNAL - SAMSAT Digital Nasional:
+Android: https://play.google.com/store/apps/details?id=app.signal.id
+iPhone : https://apps.apple.com/id/app/signal-samsat-digital-nasional/id1587653489?l=id
 Login, masukkan data kendaraan, cek tagihan pajak, lalu bayar via transfer/e-wallet. Struk digital tersedia di aplikasi.
 
 [SAMSAT DATANG LANGSUNG]
@@ -205,8 +196,12 @@ DUMAS : https://dumas.polri.go.id
 Datang ke Sentra Pelayanan Kepolisian (SPK) {$nama}: {$alamat}.
 Tersedia 24 jam untuk laporan darurat. Darurat: 110.
 
+[KRITIK & SARAN]
+Sampaikan kritik dan saran melalui e-Survey Pelayanan Polri:
+https://esurveypelayanan.polri.go.id/#/reg/1693126045675286131
+
 == BIAYA LAYANAN ==
-- SKCK          : Rp 30.000
+- SKCK             : Rp 30.000
 - Penerimaan Polri : GRATIS (waspada calo)
 
 == BERITA & KEGIATAN TERBARU ==
@@ -238,11 +233,11 @@ Tersedia 24 jam untuk laporan darurat. Darurat: 110.
 
     LANGKAH 1 — Arahkan ke Perpusdata terlebih dahulu:
     "Data yang Anda cari kemungkinan tersedia di Perpusdata Polres Gunungkidul.
-    Silakan akses di: https://bit.ly/perpusdatapolresgk"
+    Silakan akses di: https://forms.gle/kjnbpFhBuwqXHTc48"
 
     LANGKAH 2 — Jika data bersifat spesifik atau sensitif, tambahkan:
     "Jika data tidak tersedia di sana atau memerlukan permohonan resmi, Anda dapat:
-    Isi form permohonan data: https://forms.gle/dummy-ppid-form-link
+    Isi form permohonan data: https://forms.gle/kjnbpFhBuwqXHTc48
     Hubungi kami via WhatsApp/Telepon: {$telp}
     Email: {$email}
     Atau datang langsung ke: {$alamat}
