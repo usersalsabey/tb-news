@@ -5,34 +5,21 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\InformasiPelayananController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ChatbotController; 
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\EmailVerificationController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
 
 // Home Route
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Profile Routes
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
-
-// ================= PROFILE (USER ONLY) =================
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
-// News Routes — pakai NewsController
+// News Routes
 Route::get('/news',        [NewsController::class, 'index'])->name('news');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 
 // Contact Routes
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/contact', fn () => view('contact'))->name('contact');
 
 // Services Routes
 Route::prefix('services')->name('services.')->group(function () {
@@ -51,16 +38,23 @@ Route::prefix('about')->name('about.')->group(function () {
 });
 
 // Informasi Pelayanan Routes
-Route::get('/information',            [InformasiPelayananController::class, 'index']);
-Route::get('/informasi-pelayanan',    [InformasiPelayananController::class, 'index'])->name('information');
+Route::get('/informasi-pelayanan',            [InformasiPelayananController::class, 'index'])->name('information');
 Route::get('/informasi-pelayanan/skck',       [InformasiPelayananController::class, 'skck'])->name('information.skck');
 Route::get('/informasi-pelayanan/sim',        [InformasiPelayananController::class, 'sim'])->name('information.sim');
 Route::get('/informasi-pelayanan/penerimaan', [InformasiPelayananController::class, 'penerimaan'])->name('information.penerimaan');
 Route::get('/informasi-pelayanan/wbs',        [InformasiPelayananController::class, 'wbs'])->name('information.wbs');
+Route::get('/informasi/perpustakaan-data',    [InformasiPelayananController::class, 'perpusdata'])->name('information.perpusdata');
 
-Route::get('/informasi/perpustakaan-data', [InformasiPelayananController::class, 'perpusdata'])->name('information.perpusdata');
-
+// Chatbot
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
 
-Route::get('/verify-email', [EmailVerificationController::class, 'verify'])
-    ->name('verify.email');
+// Email Verification
+Route::get('/verify-email', [EmailVerificationController::class, 'verify'])->name('verify.email');
+
+// Admin OTP redirect
+Route::get('/admin', function () {
+    if (auth()->check() && !session('otp_verified')) {
+        return redirect()->route('filament.admin.pages.otp-verify');
+    }
+    return redirect('/admin/dashboard');
+});
