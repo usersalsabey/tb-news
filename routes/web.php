@@ -7,6 +7,7 @@ use App\Http\Controllers\InformasiPelayananController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\WbsController;
 
 // Home Route
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -58,3 +59,8 @@ Route::get('/admin', function () {
     }
     return redirect('/admin/dashboard');
 });
+
+Route::get('/wbs/laporan', [WbsController::class, 'index'])->name('wbs.form');
+Route::post('/wbs/laporan', [WbsController::class, 'store'])->name('wbs.store');
+Route::get('/wbs/sukses/{tiket}', [WbsController::class, 'sukses'])->name('wbs.sukses');
+Route::get('/wbs/download/{tiket}', [WbsController::class, 'downloadPdf'])->name('wbs.download');
